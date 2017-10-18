@@ -1,9 +1,13 @@
 package br.ufg.pos.fswm.pba.emprestimos.cliente.resource.dto;
 
+import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Pessoa;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
+ * DTO que representa os dados de uma Pessoa no sistema
+ *
  * @author Bruno Nogueira de Oliveira
  * @date 18/10/17.
  */
@@ -52,5 +56,31 @@ public class PessoaDTO {
 
     public BigDecimal getSalario() {
         return salario;
+    }
+
+    /**
+     * Classe interna respons&aacute;vel por realizar transforma&ccedil;&otilde;es na entidade {@link PessoaDTO}
+     */
+    public static final class PessoaDTOTransformer {
+
+        private PessoaDTOTransformer() {
+            // classe utilitaria. Nao instanciavel
+        }
+
+        /**
+         * Realiza a transformação de uma entidade {@link PessoaDTO} em {@link Pessoa}
+         *
+         * @param pessoaDto {@link PessoaDTO}
+         * @return {@link Pessoa}
+         */
+        public static Pessoa criarEntidade(PessoaDTO pessoaDto) {
+            final Pessoa pessoa = new Pessoa();
+            pessoa.setNome(pessoaDto.getNome());
+            pessoa.setCpf(pessoaDto.getCpf());
+            pessoa.setProfissao(pessoaDto.getProfissao());
+            pessoa.setSalario(pessoaDto.getSalario());
+            pessoa.setNascimento(pessoaDto.getNascimento());
+            return pessoa;
+        }
     }
 }

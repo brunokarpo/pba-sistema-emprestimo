@@ -35,7 +35,7 @@ public class PessoaResourceTest extends EmprestimosApplicationTests {
                 .header(HEADER_CONTENT_TYPE, ContentType.JSON)
                 .body(pessoaDTO)
         .when()
-        .post("/api/emprestimo/cadastrar")
+        .post("/api/emprestimo/cliente/cadastrar")
         .then()
                 .log().headers()
             .and()
