@@ -31,7 +31,7 @@ public class PessoaServicoTest {
     private static final String PROFISSAO = "Programador de Software";
     private static final BigDecimal SALARIO = new BigDecimal(3000.00);
     private static final LocalDate NASCIMENTO = LocalDate.of(1995, Month.FEBRUARY, 22);
-    public static final Sexo SEXO = Sexo.FEMININO;
+    private static final Sexo SEXO = Sexo.FEMININO;
 
     @MockBean
     private PessoaRepositorio repositorioMock;

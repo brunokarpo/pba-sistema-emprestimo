@@ -49,6 +49,11 @@ public class PessoaResourceTest extends EmprestimosApplicationTests {
                         "profissao", equalTo("Programador de Software"),
                         "salario", equalTo(3500),
                         "risco", equalTo("MEDIO"));
-
     }
+
+    /*
+     * TODO: testes a se fazer:
+     * * Tentar cadastrar pessoa com CPF inválido
+     * * Tentar cadastrar pessoa com dados divergentes do sistema de Cadastro Positivo (no caso de exceção, não deverá ser salvo);
+     */
 }
