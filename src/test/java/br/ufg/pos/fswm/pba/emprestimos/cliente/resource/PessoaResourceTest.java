@@ -47,7 +47,7 @@ public class PessoaResourceTest extends EmprestimosApplicationTests {
                         "cpf", equalTo("37270463689"),
                         "nascimento", equalTo("1995-02-22"),
                         "profissao", equalTo("Programador de Software"),
-                        "salario", equalTo(LocalDate.of(1995, Month.FEBRUARY, 22)),
+                        "salario", equalTo(3500),
                         "risco", equalTo("MEDIO"));
 
     }

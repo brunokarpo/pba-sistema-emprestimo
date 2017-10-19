@@ -49,6 +49,6 @@ public class PessoaResource {
 
         publisher.publishEvent(new RecursoCriadoEvent(this, response, pessoa.getCpf()));
 
-        return new ResponseEntity<>(new PessoaDTO(), HttpStatus.CREATED);
+        return new ResponseEntity<>(PessoaDTO.PessoaDTOTransformer.criarDto(pessoa), HttpStatus.CREATED);
     }
 }
