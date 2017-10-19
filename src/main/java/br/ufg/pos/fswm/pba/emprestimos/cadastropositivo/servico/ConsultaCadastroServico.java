@@ -1,5 +1,6 @@
 package br.ufg.pos.fswm.pba.emprestimos.cadastropositivo.servico;
 
+import br.ufg.pos.fswm.pba.emprestimos.cadastropositivo.servico.exceptions.DivergenciaDadosException;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Pessoa;
 
 /**
@@ -21,5 +22,5 @@ public interface ConsultaCadastroServico {
      * @param pessoa {@link Pessoa} que deve ter o cadastro verificado junto ao sistema de cadastro positivo.
      * @return pessoa recebida por par&acirc;metro com o n&iacute;vel de risco preenchido.
      */
-    Pessoa consultarCadastro(Pessoa pessoa);
+    Pessoa consultarCadastro(Pessoa pessoa) throws DivergenciaDadosException;
 }

@@ -1,6 +1,7 @@
 package br.ufg.pos.fswm.pba.emprestimos.cliente.servico.impl;
 
 import br.ufg.pos.fswm.pba.emprestimos.cadastropositivo.servico.ConsultaCadastroServico;
+import br.ufg.pos.fswm.pba.emprestimos.cadastropositivo.servico.exceptions.DivergenciaDadosException;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Pessoa;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.repositorio.PessoaRepositorio;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.PessoaServico;
@@ -36,6 +37,12 @@ public class PessoaServicoImpl implements PessoaServico {
     @Override
     public Pessoa salvar(Pessoa pessoa) {
         pessoa = pessoaRepositorio.save(pessoa);
-        return consultaCadastroServico.consultarCadastro(pessoa);
+        try {
+            return consultaCadastroServico.consultarCadastro(pessoa);
+        } catch (DivergenciaDadosException e) {
+            // TODO tratar essa excecao. Testar
+            e.printStackTrace();
+            return null;
+        }
     }
 }

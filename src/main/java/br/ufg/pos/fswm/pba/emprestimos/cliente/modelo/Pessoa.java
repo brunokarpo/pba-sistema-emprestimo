@@ -1,5 +1,7 @@
 package br.ufg.pos.fswm.pba.emprestimos.cliente.modelo;
 
+import br.ufg.pos.fswm.pba.emprestimos.cadastropositivo.modelo.Risco;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -25,6 +27,9 @@ public class Pessoa {
 
     @Enumerated(EnumType.STRING)
     private Sexo sexo;
+
+    @Transient
+    private Risco risco;
 
     public Long getId() {
         return id;
@@ -80,5 +85,13 @@ public class Pessoa {
 
     public Sexo getSexo() {
         return sexo;
+    }
+
+    public Risco getRisco() {
+        return risco;
+    }
+
+    public void setRisco(Risco risco) {
+        this.risco = risco;
     }
 }
