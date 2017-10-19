@@ -28,10 +28,13 @@ public class PessoaResourceTest extends EmprestimosApplicationTests {
     private static final String CPF = "37270463689";
     private static final String SEXO = "FEMININO";
     private static final LocalDate NASCIMENTO = LocalDate.of(1995, Month.FEBRUARY, 22);
-    private static final String PROFISS = "Programador de Software";
+    private static final String NASCIMENTO_STRING = "1995-02-22";
+    private static final String PROFISSAO = "Programador de Software";
     private static final BigDecimal SALARIO = new BigDecimal(3500.00);
-    private static final String URL_CONSULTA_CADASTRO = "http://dev.consulta-cadastro.nao.existe.com:8080/api/cadastro-positivo/consultar/";
+    private static final int SALARIO_NUMERICO = 3500;
     private static final int NIVEL_3 = 3;
+    private static final String RISCO_STRING = "MEDIO";
+    private static final String URL_CONSULTA_CADASTRO = "http://dev.consulta-cadastro.nao.existe.com:8080/api/cadastro-positivo/consultar/";
 
     @MockBean
     private RestTemplate templateMock;
@@ -57,7 +60,7 @@ public class PessoaResourceTest extends EmprestimosApplicationTests {
         pessoaDTO.setCpf(CPF);
         pessoaDTO.setSexo(SEXO);
         pessoaDTO.setNascimento(NASCIMENTO);
-        pessoaDTO.setProfissao(PROFISS);
+        pessoaDTO.setProfissao(PROFISSAO);
         pessoaDTO.setSalario(SALARIO);
 
         given()
@@ -73,13 +76,13 @@ public class PessoaResourceTest extends EmprestimosApplicationTests {
                 .log().body()
             .and()
                 .statusCode(HttpStatus.CREATED.value())
-                .headers("Location", equalTo("http://localhost:"+porta+"/api/emprestimo/cliente/37270463689"))
-                .body("nome", equalTo("Milena Sophia Gomes"),
-                        "cpf", equalTo("37270463689"),
-                        "nascimento", equalTo("1995-02-22"),
-                        "profissao", equalTo("Programador de Software"),
-                        "salario", equalTo(3500),
-                        "risco", equalTo("MEDIO"));
+                .headers("Location", equalTo("http://localhost:"+porta+"/api/emprestimo/cliente/" + CPF))
+                .body("nome", equalTo(NOME),
+                        "cpf", equalTo(CPF),
+                        "nascimento", equalTo(NASCIMENTO_STRING),
+                        "profissao", equalTo(PROFISSAO),
+                        "salario", equalTo(SALARIO_NUMERICO),
+                        "risco", equalTo(RISCO_STRING));
     }
 
     /*
