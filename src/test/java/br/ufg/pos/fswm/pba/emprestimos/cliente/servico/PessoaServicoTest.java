@@ -1,5 +1,6 @@
 package br.ufg.pos.fswm.pba.emprestimos.cliente.servico;
 
+import br.ufg.pos.fswm.pba.emprestimos.cadastropositivo.servico.ConsultaCadastroServico;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Pessoa;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Sexo;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.repositorio.PessoaRepositorio;
@@ -16,6 +17,7 @@ import java.time.LocalDate;
 import java.time.Month;
 
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Bruno Nogueira de Oliveira
@@ -34,6 +36,9 @@ public class PessoaServicoTest {
     @MockBean
     private PessoaRepositorio repositorioMock;
 
+    @MockBean
+    private ConsultaCadastroServico consultaCadastroMock;
+
     private Pessoa pessoa;
 
     private PessoaServico sut;
@@ -48,7 +53,9 @@ public class PessoaServicoTest {
         pessoa.setSalario(SALARIO);
         pessoa.setSexo(SEXO);
 
-        sut = new PessoaServicoImpl(repositorioMock);
+        sut = new PessoaServicoImpl(repositorioMock, consultaCadastroMock);
+
+        when(repositorioMock.save(pessoa)).thenReturn(pessoa);
     }
 
     @Test
@@ -56,5 +63,12 @@ public class PessoaServicoTest {
         sut.salvar(pessoa);
 
         verify(repositorioMock).save(pessoa);
+    }
+
+    @Test
+    public void deve_consultar_sistema_de_cadastro_positivo_apos_salvar_nova_pessoa() throws Exception {
+        sut.salvar(pessoa);
+
+        verify(consultaCadastroMock).consultarCadastro(pessoa);
     }
 }
