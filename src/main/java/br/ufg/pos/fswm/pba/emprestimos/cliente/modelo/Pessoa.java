@@ -1,5 +1,6 @@
 package br.ufg.pos.fswm.pba.emprestimos.cliente.modelo;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -9,7 +10,13 @@ import java.time.LocalDate;
  * @author Bruno Nogueira de Oliveira
  * @date 18/10/17.
  */
+@Entity
+@Table(name = "pessoa")
 public class Pessoa {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String nome;
     private String cpf;
     private String profissao;

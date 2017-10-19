@@ -16,11 +16,11 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class PessoaDTOTransformerTest {
 
-    public static final String NOME = "Milena Sophia Gomes";
-    public static final String CPF = "37270463689";
-    public static final String PROFISSAO = "Programador de Software";
-    public static final BigDecimal SALARIO = new BigDecimal(3000.00);
-    public static final LocalDate NASCIMENTO = LocalDate.of(1995, Month.FEBRUARY, 22);
+    private static final String NOME = "Milena Sophia Gomes";
+    private static final String CPF = "37270463689";
+    private static final String PROFISSAO = "Programador de Software";
+    private static final BigDecimal SALARIO = new BigDecimal(3000.00);
+    private static final LocalDate NASCIMENTO = LocalDate.of(1995, Month.FEBRUARY, 22);
 
     private static PessoaDTO dto;
     private static Pessoa pessoa;

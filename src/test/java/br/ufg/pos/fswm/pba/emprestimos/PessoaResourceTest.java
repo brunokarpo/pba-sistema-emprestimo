@@ -18,8 +18,6 @@ import static org.hamcrest.Matchers.equalTo;
  */
 public class PessoaResourceTest extends EmprestimosApplicationTests {
 
-
-
     @Test
     public void deve_ser_possivel_cadastrar_uma_pessoa_nova() throws Exception {
         final PessoaDTO pessoaDTO = new PessoaDTO();

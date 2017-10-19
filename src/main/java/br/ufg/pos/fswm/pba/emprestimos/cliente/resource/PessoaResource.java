@@ -2,6 +2,8 @@ package br.ufg.pos.fswm.pba.emprestimos.cliente.resource;
 
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Pessoa;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.resource.dto.PessoaDTO;
+import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.PessoaServico;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +23,13 @@ import javax.servlet.http.HttpServletResponse;
 @RequestMapping("/api/emprestimo/cliente/")
 public class PessoaResource {
 
+    private PessoaServico servico;
+
+    @Autowired
+    public PessoaResource(PessoaServico servico) {
+        this.servico = servico;
+    }
+
     /**
      * Realiza o cadastro de uma nova pessoa no sistema
      *
@@ -31,6 +40,7 @@ public class PessoaResource {
     @PostMapping("/cadastrar")
     public ResponseEntity<PessoaDTO> criarNovo(@RequestBody PessoaDTO pessoaDto, HttpServletResponse response) {
         Pessoa pessoa = PessoaDTO.PessoaDTOTransformer.criarEntidade(pessoaDto);
+        pessoa = servico.salvar(pessoa);
 
         return new ResponseEntity<>(new PessoaDTO(), HttpStatus.CREATED);
     }
