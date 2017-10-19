@@ -15,7 +15,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Bruno Nogueira de Oliveira
  * @date 18/10/17.
  */
-public class PessoaDTOTransformerTest {
+public class PessoaDTOTransformer_ToEntityTest {
 
     private static final String NOME = "Milena Sophia Gomes";
     private static final String CPF = "37270463689";

@@ -93,5 +93,22 @@ public class PessoaDTO {
             pessoa.setSexo(Sexo.fromNome(pessoaDto.getSexo()));
             return pessoa;
         }
+
+        /**
+         * Realiza a transformação de uma entidade {@link Pessoa} em uma {@link PessoaDTO}
+         *
+         * @param pessoa {@link Pessoa}
+         * @return {@link PessoaDTO}
+         */
+        public static PessoaDTO criarDto(Pessoa pessoa) {
+            final PessoaDTO dto = new PessoaDTO();
+            dto.setNome(pessoa.getNome());
+            dto.setCpf(pessoa.getCpf());
+            dto.setProfissao(pessoa.getProfissao());
+            dto.setSalario(pessoa.getSalario());
+            dto.setNascimento(pessoa.getNascimento());
+            dto.setSexo(pessoa.getSexo().name());
+            return dto;
+        }
     }
 }
