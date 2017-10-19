@@ -1,5 +1,6 @@
 package br.ufg.pos.fswm.pba.emprestimos.cliente.resource.dto;
 
+import br.ufg.pos.fswm.pba.emprestimos.cadastropositivo.modelo.Risco;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Pessoa;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Sexo;
 import org.junit.BeforeClass;
@@ -24,6 +25,7 @@ public class PessoaDTOTransformer_ToDTOTest {
     private static final LocalDate NASCIMENTO = LocalDate.of(1995, Month.FEBRUARY, 22);
     private static final Sexo SEXO = Sexo.FEMININO;
     private static final String SEXO_STR = "FEMININO";
+    public static final Risco RISCO = Risco.MEDIO;
 
     private static PessoaDTO dto;
     private static Pessoa pessoa;
@@ -37,6 +39,7 @@ public class PessoaDTOTransformer_ToDTOTest {
         pessoa.setProfissao(PROFISSAO);
         pessoa.setNascimento(NASCIMENTO);
         pessoa.setSalario(SALARIO);
+        pessoa.setRisco(RISCO);
 
         dto = PessoaDTO.PessoaDTOTransformer.criarDto(pessoa);
     }
@@ -74,5 +77,10 @@ public class PessoaDTOTransformer_ToDTOTest {
     @Test
     public void deve_preencher_sexo_da_pessoa_no_dto_em_formato_string() throws Exception {
         assertThat(dto.getSexo()).isEqualTo(SEXO_STR);
+    }
+
+    @Test
+    public void deve_preencher_risco_da_pessoa_no_dto_em_formato_string() throws Exception {
+        assertThat(dto.getRisco()).isEqualTo(RISCO.name());
     }
 }

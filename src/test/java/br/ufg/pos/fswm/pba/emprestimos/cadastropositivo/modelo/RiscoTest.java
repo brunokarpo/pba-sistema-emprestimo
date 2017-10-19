@@ -10,13 +10,13 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class RiscoTest {
 
-    public static final int NIVEL_0 = 0;
-    public static final int NIVEL_1 = 1;
-    public static final int NIVEL_2 = 2;
-    public static final int NIVEL_3 = 3;
-    public static final int NIVEL_4 = 4;
-    public static final int NIVEL_5 = 5;
-    public static final int NIVEL_NAO_MAPEADO = 159;
+    private static final int NIVEL_0 = 0;
+    private static final int NIVEL_1 = 1;
+    private static final int NIVEL_2 = 2;
+    private static final int NIVEL_3 = 3;
+    private static final int NIVEL_4 = 4;
+    private static final int NIVEL_5 = 5;
+    private static final int NIVEL_NAO_MAPEADO = 159;
 
     @Test
     public void deve_retornar_risco_medio_para_cliente_com_risco_nivel_0() throws Exception {

@@ -19,6 +19,7 @@ public class PessoaDTO {
     private String profissao;
     private BigDecimal salario;
     private String sexo;
+    private String risco;
 
     public void setNome(String nome) {
         this.nome = nome;
@@ -68,6 +69,14 @@ public class PessoaDTO {
         return sexo;
     }
 
+    public String getRisco() {
+        return risco;
+    }
+
+    public void setRisco(String risco) {
+        this.risco = risco;
+    }
+
     /**
      * Classe interna respons&aacute;vel por realizar transforma&ccedil;&otilde;es na entidade {@link PessoaDTO}
      */
@@ -108,6 +117,7 @@ public class PessoaDTO {
             dto.setSalario(pessoa.getSalario());
             dto.setNascimento(pessoa.getNascimento());
             dto.setSexo(pessoa.getSexo().name());
+            dto.setRisco(pessoa.getRisco().name());
             return dto;
         }
     }
