@@ -1,0 +1,3 @@
+DELETE FROM pessoa;
+
+ALTER SEQUENCE pessoa_id_seq RESTART WITH 1;

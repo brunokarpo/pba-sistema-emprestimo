@@ -23,6 +23,7 @@ public class PessoaResourceTest extends EmprestimosApplicationTests {
         final PessoaDTO pessoaDTO = new PessoaDTO();
         pessoaDTO.setNome("Milena Sophia Gomes");
         pessoaDTO.setCpf("37270463689");
+        pessoaDTO.setSexo("FEMININO");
         pessoaDTO.setNascimento(LocalDate.of(1995, Month.FEBRUARY, 22));
         pessoaDTO.setProfissao("Programador de Software");
         pessoaDTO.setSalario(new BigDecimal(3500.00));

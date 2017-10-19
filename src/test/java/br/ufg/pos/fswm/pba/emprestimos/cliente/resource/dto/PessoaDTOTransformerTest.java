@@ -1,6 +1,7 @@
 package br.ufg.pos.fswm.pba.emprestimos.cliente.resource.dto;
 
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Pessoa;
+import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Sexo;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -21,6 +22,7 @@ public class PessoaDTOTransformerTest {
     private static final String PROFISSAO = "Programador de Software";
     private static final BigDecimal SALARIO = new BigDecimal(3000.00);
     private static final LocalDate NASCIMENTO = LocalDate.of(1995, Month.FEBRUARY, 22);
+    public static final String SEXO = "FEMININO";
 
     private static PessoaDTO dto;
     private static Pessoa pessoa;
@@ -32,6 +34,7 @@ public class PessoaDTOTransformerTest {
         dto.setCpf(CPF);
         dto.setProfissao(PROFISSAO);
         dto.setSalario(SALARIO);
+        dto.setSexo(SEXO);
         dto.setNascimento(NASCIMENTO);
 
         pessoa = PessoaDTO.PessoaDTOTransformer.criarEntidade(dto);
@@ -60,5 +63,10 @@ public class PessoaDTOTransformerTest {
     @Test
     public void deve_preencher_data_nascimento_da_pessoa() throws Exception {
         assertThat(pessoa.getNascimento()).isEqualTo(NASCIMENTO);
+    }
+
+    @Test
+    public void deve_preencher_sexo_da_pessoa() throws Exception {
+        assertThat(pessoa.getSexo()).isEqualTo(Sexo.FEMININO);
     }
 }

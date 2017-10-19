@@ -1,6 +1,7 @@
 package br.ufg.pos.fswm.pba.emprestimos.cliente.servico;
 
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Pessoa;
+import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Sexo;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.repositorio.PessoaRepositorio;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.impl.PessoaServicoImpl;
 import org.junit.Before;
@@ -28,6 +29,7 @@ public class PessoaServicoTest {
     private static final String PROFISSAO = "Programador de Software";
     private static final BigDecimal SALARIO = new BigDecimal(3000.00);
     private static final LocalDate NASCIMENTO = LocalDate.of(1995, Month.FEBRUARY, 22);
+    public static final Sexo SEXO = Sexo.FEMININO;
 
     @MockBean
     private PessoaRepositorio repositorioMock;
@@ -44,6 +46,7 @@ public class PessoaServicoTest {
         pessoa.setNascimento(NASCIMENTO);
         pessoa.setProfissao(PROFISSAO);
         pessoa.setSalario(SALARIO);
+        pessoa.setSexo(SEXO);
 
         sut = new PessoaServicoImpl(repositorioMock);
     }

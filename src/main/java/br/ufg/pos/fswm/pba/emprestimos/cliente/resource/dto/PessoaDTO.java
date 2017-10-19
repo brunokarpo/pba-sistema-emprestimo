@@ -1,6 +1,7 @@
 package br.ufg.pos.fswm.pba.emprestimos.cliente.resource.dto;
 
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Pessoa;
+import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Sexo;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -17,6 +18,7 @@ public class PessoaDTO {
     private LocalDate nascimento;
     private String profissao;
     private BigDecimal salario;
+    private String sexo;
 
     public void setNome(String nome) {
         this.nome = nome;
@@ -58,6 +60,14 @@ public class PessoaDTO {
         return salario;
     }
 
+    public void setSexo(String sexo) {
+        this.sexo = sexo;
+    }
+
+    public String getSexo() {
+        return sexo;
+    }
+
     /**
      * Classe interna respons&aacute;vel por realizar transforma&ccedil;&otilde;es na entidade {@link PessoaDTO}
      */
@@ -80,6 +90,7 @@ public class PessoaDTO {
             pessoa.setProfissao(pessoaDto.getProfissao());
             pessoa.setSalario(pessoaDto.getSalario());
             pessoa.setNascimento(pessoaDto.getNascimento());
+            pessoa.setSexo(Sexo.fromNome(pessoaDto.getSexo()));
             return pessoa;
         }
     }

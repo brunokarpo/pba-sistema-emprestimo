@@ -23,6 +23,17 @@ public class Pessoa {
     private BigDecimal salario;
     private LocalDate nascimento;
 
+    @Enumerated(EnumType.STRING)
+    private Sexo sexo;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getNome() {
         return nome;
     }
@@ -61,5 +72,13 @@ public class Pessoa {
 
     public void setNascimento(LocalDate nascimento) {
         this.nascimento = nascimento;
+    }
+
+    public void setSexo(Sexo sexo) {
+        this.sexo = sexo;
+    }
+
+    public Sexo getSexo() {
+        return sexo;
     }
 }

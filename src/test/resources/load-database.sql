@@ -1,0 +1,5 @@
+INSERT INTO pessoa (nome, cpf, nascimento, sexo, profissao, salario) VALUES ('Cauã Pedro Henry Moura', '13743570815', DATE '1995-03-07', 'MASCULINO', 'Vendedor', '1200.00');
+INSERT INTO pessoa (nome, cpf, nascimento, sexo, profissao, salario) VALUES ('César Eduardo Martins', '57283751114', DATE '1997-11-20', 'MASCULINO', 'Mecânico', '2200.00');
+INSERT INTO pessoa (nome, cpf, nascimento, sexo, profissao, salario) VALUES ('Juliana Maria Oliveira', '61584806907', DATE '1989-03-03', 'FEMININO', 'Estilista', '5000.00');
+INSERT INTO pessoa (nome, cpf, nascimento, sexo, profissao, salario) VALUES ('Carolina Elisa Souza', '25450387849', DATE '1995-07-10', 'FEMININO', 'Atendente de Telemarketing', '900.00');
+INSERT INTO pessoa (nome, cpf, nascimento, sexo, profissao, salario) VALUES ('Alana Cecília Monteiro', '77144321528', DATE '1991-07-12', 'FEMININO', 'Gerente de Operações', '6000.00');
