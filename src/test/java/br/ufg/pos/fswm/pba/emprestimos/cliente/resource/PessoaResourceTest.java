@@ -1,5 +1,6 @@
-package br.ufg.pos.fswm.pba.emprestimos;
+package br.ufg.pos.fswm.pba.emprestimos.cliente.resource;
 
+import br.ufg.pos.fswm.pba.emprestimos.EmprestimosApplicationTests;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.resource.dto.PessoaDTO;
 import io.restassured.http.ContentType;
 import org.junit.Test;
@@ -34,14 +35,14 @@ public class PessoaResourceTest extends EmprestimosApplicationTests {
                 .header(HEADER_CONTENT_TYPE, ContentType.JSON)
                 .body(pessoaDTO)
         .when()
-        .post("/api/emprestimo/cliente/cadastrar")
+        .post("/api/emprestimo/cliente")
         .then()
                 .log().headers()
             .and()
                 .log().body()
             .and()
                 .statusCode(HttpStatus.CREATED.value())
-                .headers("Location", equalTo("http://localhost:"+porta+"/api/emprestimo/consultar/37270463689"))
+                .headers("Location", equalTo("http://localhost:"+porta+"/api/emprestimo/cliente/37270463689"))
                 .body("nome", equalTo("Milena Sophia Gomes"),
                         "cpf", equalTo("37270463689"),
                         "nascimento", equalTo("1995-02-22"),

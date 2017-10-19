@@ -2,8 +2,10 @@ package br.ufg.pos.fswm.pba.emprestimos.cliente.resource;
 
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Pessoa;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.resource.dto.PessoaDTO;
+import br.ufg.pos.fswm.pba.emprestimos.cliente.resource.evento.RecursoCriadoEvent;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.PessoaServico;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,14 +22,17 @@ import javax.servlet.http.HttpServletResponse;
  * @date 18/10/17.
  */
 @RestController
-@RequestMapping("/api/emprestimo/cliente/")
+@RequestMapping("/api/emprestimo/cliente")
 public class PessoaResource {
 
-    private PessoaServico servico;
+    private final PessoaServico servico;
+
+    private final ApplicationEventPublisher publisher;
 
     @Autowired
-    public PessoaResource(PessoaServico servico) {
+    public PessoaResource(PessoaServico servico, ApplicationEventPublisher publisher) {
         this.servico = servico;
+        this.publisher = publisher;
     }
 
     /**
@@ -37,10 +42,12 @@ public class PessoaResource {
      * @param response representa&ccedil;&atilde;o da resposta.
      * @return
      */
-    @PostMapping("/cadastrar")
+    @PostMapping
     public ResponseEntity<PessoaDTO> criarNovo(@RequestBody PessoaDTO pessoaDto, HttpServletResponse response) {
         Pessoa pessoa = PessoaDTO.PessoaDTOTransformer.criarEntidade(pessoaDto);
         pessoa = servico.salvar(pessoa);
+
+        publisher.publishEvent(new RecursoCriadoEvent(this, response, pessoa.getCpf()));
 
         return new ResponseEntity<>(new PessoaDTO(), HttpStatus.CREATED);
     }
