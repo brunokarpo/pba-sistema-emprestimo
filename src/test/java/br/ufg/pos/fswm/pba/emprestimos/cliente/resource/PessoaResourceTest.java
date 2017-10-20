@@ -12,7 +12,9 @@ import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.temporal.ChronoUnit;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
@@ -107,6 +109,29 @@ public class PessoaResourceTest extends EmprestimosApplicationTests {
                     .body("statusHttp", contains(400),
                             "mensagemUsuario", contains("CPF inválido. Informe um CPF válido"));
 
+    }
+
+    @Test
+    public void nao_deve_ser_possivel_possivel_cadastrar_nenhuma_pessoa_menor_de_idade() throws Exception {
+        LocalDate nascimentoMenor = LocalDate.now().minus(15, ChronoUnit.YEARS);
+
+        pessoaDTO.setNascimento(nascimentoMenor);
+
+        given()
+                .request()
+                .header(HEADER_ACCEPT, ContentType.ANY)
+                .header(HEADER_CONTENT_TYPE, ContentType.JSON)
+                .body(pessoaDTO)
+            .when()
+            .post("/api/emprestimo/cliente")
+            .then()
+                    .log().headers()
+                .and()
+                    .log().body()
+                .and()
+                    .statusCode(HttpStatus.BAD_REQUEST.value())
+                    .body("statusHttp", contains(400),
+                            "mensagemUsuario", contains("Não é possível cadastrar menores de idade"));
     }
 
     /*

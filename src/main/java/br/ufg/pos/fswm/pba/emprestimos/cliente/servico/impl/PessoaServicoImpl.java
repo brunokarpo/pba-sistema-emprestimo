@@ -5,9 +5,14 @@ import br.ufg.pos.fswm.pba.emprestimos.cadastropositivo.servico.exceptions.Diver
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Pessoa;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.repositorio.PessoaRepositorio;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.PessoaServico;
+import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.exceptions.PessoaServicoException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 /**
  * Implementa interface {@link PessoaServico}
@@ -18,6 +23,8 @@ import org.springframework.stereotype.Service;
 @Service
 @Primary
 public class PessoaServicoImpl implements PessoaServico {
+
+    private static final Logger LOG = LoggerFactory.getLogger(PessoaServicoImpl.class);
 
     private final PessoaRepositorio pessoaRepositorio;
     private final ConsultaCadastroServico consultaCadastroServico;
@@ -35,7 +42,13 @@ public class PessoaServicoImpl implements PessoaServico {
     }
 
     @Override
-    public Pessoa salvar(Pessoa pessoa) {
+    public Pessoa salvar(Pessoa pessoa) throws PessoaServicoException {
+
+        if (LocalDate.now().compareTo(pessoa.getNascimento()) < 18) {
+            LOG.warn("Pessoa menor de idade. Não vou salvar.");
+            throw new PessoaServicoException("Não pode salvar usuário menor de idade");
+        }
+
         pessoa = pessoaRepositorio.save(pessoa);
         try {
             return consultaCadastroServico.consultarCadastro(pessoa);

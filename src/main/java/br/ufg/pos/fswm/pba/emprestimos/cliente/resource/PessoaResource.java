@@ -4,6 +4,7 @@ import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Pessoa;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.resource.dto.PessoaDTO;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.resource.evento.RecursoCriadoEvent;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.PessoaServico;
+import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.exceptions.PessoaServicoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
@@ -44,7 +45,7 @@ public class PessoaResource {
      * @return
      */
     @PostMapping
-    public ResponseEntity<PessoaDTO> criarNovo(@RequestBody @Valid PessoaDTO pessoaDto, HttpServletResponse response) {
+    public ResponseEntity<PessoaDTO> criarNovo(@RequestBody @Valid PessoaDTO pessoaDto, HttpServletResponse response) throws PessoaServicoException {
         Pessoa pessoa = PessoaDTO.PessoaDTOTransformer.criarEntidade(pessoaDto);
         pessoa = servico.salvar(pessoa);
 

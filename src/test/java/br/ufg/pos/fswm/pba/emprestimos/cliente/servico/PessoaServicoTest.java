@@ -4,9 +4,12 @@ import br.ufg.pos.fswm.pba.emprestimos.cadastropositivo.servico.ConsultaCadastro
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Pessoa;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Sexo;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.repositorio.PessoaRepositorio;
+import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.exceptions.PessoaServicoException;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.impl.PessoaServicoImpl;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -15,6 +18,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.temporal.ChronoUnit;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -32,6 +36,9 @@ public class PessoaServicoTest {
     private static final BigDecimal SALARIO = new BigDecimal(3000.00);
     private static final LocalDate NASCIMENTO = LocalDate.of(1995, Month.FEBRUARY, 22);
     private static final Sexo SEXO = Sexo.FEMININO;
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @MockBean
     private PessoaRepositorio repositorioMock;
@@ -70,5 +77,16 @@ public class PessoaServicoTest {
         sut.salvar(pessoa);
 
         verify(consultaCadastroMock).consultarCadastro(pessoa);
+    }
+
+    @Test
+    public void nao_deve_permitir_salvar_pessoa_menor_de_idade() throws Exception {
+        LocalDate nascimentoMenor = LocalDate.now().minus(12, ChronoUnit.YEARS);
+        pessoa.setNascimento(nascimentoMenor);
+
+        expectedException.expect(PessoaServicoException.class);
+        expectedException.expectMessage("Não pode salvar usuário menor de idade");
+
+        sut.salvar(pessoa);
     }
 }

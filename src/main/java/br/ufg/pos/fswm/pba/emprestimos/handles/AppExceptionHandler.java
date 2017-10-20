@@ -1,5 +1,6 @@
 package br.ufg.pos.fswm.pba.emprestimos.handles;
 
+import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.exceptions.PessoaServicoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -9,10 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -30,6 +33,13 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         final List<Erro> erros = criarListaDeErros(ex.getBindingResult());
 
         return handleExceptionInternal(ex, erros, headers, HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler({PessoaServicoException.class})
+    public ResponseEntity<Object> handlePessoaServicoException(PessoaServicoException ex, WebRequest request) {
+        String mensagemUsuario = messageSource.getMessage("servico.pessoa.menor.idade", null, LocaleContextHolder.getLocale());
+        Erro erro = new Erro(HttpStatus.BAD_REQUEST.value(), mensagemUsuario, ex.getMessage());
+        return handleExceptionInternal(ex, Arrays.asList(erro), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     private List<Erro> criarListaDeErros(BindingResult bindingResult) {
