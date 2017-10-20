@@ -4,6 +4,8 @@ import br.ufg.pos.fswm.pba.emprestimos.cadastropositivo.servico.ConsultaCadastro
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Pessoa;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Sexo;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.repositorio.PessoaRepositorio;
+import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.exceptions.CpfUnicidadeException;
+import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.exceptions.MenorDeIdadeException;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.exceptions.PessoaServicoException;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.impl.PessoaServicoImpl;
 import org.junit.Before;
@@ -19,6 +21,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.temporal.ChronoUnit;
+import java.util.Optional;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -63,6 +66,7 @@ public class PessoaServicoTest {
         sut = new PessoaServicoImpl(repositorioMock, consultaCadastroMock);
 
         when(repositorioMock.save(pessoa)).thenReturn(pessoa);
+        when(repositorioMock.findByCpf(CPF)).thenReturn(Optional.empty());
     }
 
     @Test
@@ -84,8 +88,22 @@ public class PessoaServicoTest {
         LocalDate nascimentoMenor = LocalDate.now().minus(12, ChronoUnit.YEARS);
         pessoa.setNascimento(nascimentoMenor);
 
-        expectedException.expect(PessoaServicoException.class);
+        expectedException.expect(MenorDeIdadeException.class);
         expectedException.expectMessage("Não pode salvar usuário menor de idade");
+
+        sut.salvar(pessoa);
+    }
+
+    @Test
+    public void nao_deve_permitir_salvar_pessoa_com_mesmo_cpf_de_outra() throws Exception {
+        final Pessoa doBanco = new Pessoa();
+        pessoa.setId(3L);
+        pessoa.setCpf(CPF);
+
+        when(repositorioMock.findByCpf(CPF)).thenReturn(Optional.of(doBanco));
+
+        expectedException.expect(CpfUnicidadeException.class);
+        expectedException.expectMessage("Não pode salvar pessoa com mesmo CPF de outra");
 
         sut.salvar(pessoa);
     }

@@ -37,7 +37,7 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({PessoaServicoException.class})
     public ResponseEntity<Object> handlePessoaServicoException(PessoaServicoException ex, WebRequest request) {
-        String mensagemUsuario = messageSource.getMessage("servico.pessoa.menor.idade", null, LocaleContextHolder.getLocale());
+        String mensagemUsuario = messageSource.getMessage(ex.getMessageProperty(), null, LocaleContextHolder.getLocale());
         Erro erro = new Erro(HttpStatus.BAD_REQUEST.value(), mensagemUsuario, ex.getMessage());
         return handleExceptionInternal(ex, Arrays.asList(erro), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }

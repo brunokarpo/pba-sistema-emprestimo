@@ -13,6 +13,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.temporal.ChronoField;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalField;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -45,5 +49,23 @@ public class PessoaRepositorioTest {
         pessoa = sut.save(pessoa);
 
         assertThat(pessoa.getId()).isEqualTo(6L);
+    }
+
+    @Test
+    public void deve_buscar_pessoa_utilizando_cpf_como_parametro_de_busca() throws Exception {
+        final Optional<Pessoa> optional = sut.findByCpf("61584806907");
+
+        assertThat(optional.isPresent()).isTrue();
+
+        final Pessoa pessoa = optional.get();
+        assertThat(pessoa.getNome()).isEqualTo("Juliana Maria Oliveira");
+        assertThat(pessoa.getProfissao()).isEqualTo("Estilista");
+        assertThat(pessoa.getSexo()).isEqualTo(Sexo.FEMININO);
+        assertThat(pessoa.getSalario().doubleValue()).isEqualTo(new BigDecimal(5000.0).doubleValue());
+
+        LocalDate nascimento = pessoa.getNascimento();
+        assertThat(nascimento.get(ChronoField.YEAR)).isEqualTo(1989);
+        assertThat(nascimento.get(ChronoField.MONTH_OF_YEAR)).isEqualTo(3);
+        assertThat(nascimento.get(ChronoField.DAY_OF_MONTH)).isEqualTo(3);
     }
 }

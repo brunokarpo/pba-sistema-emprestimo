@@ -6,9 +6,16 @@ package br.ufg.pos.fswm.pba.emprestimos.cliente.servico.exceptions;
  * @author Bruno Nogueira de Oliveira
  * @date 19/10/17.
  */
-public class PessoaServicoException extends Exception {
+public abstract class PessoaServicoException extends Exception {
 
-    public PessoaServicoException(String message) {
+    private final String messageProperty;
+
+    PessoaServicoException(String messageProperty, String message) {
         super(message);
+        this.messageProperty = messageProperty;
+    }
+
+    public String getMessageProperty() {
+        return messageProperty;
     }
 }

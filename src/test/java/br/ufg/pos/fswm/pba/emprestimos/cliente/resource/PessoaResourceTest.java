@@ -133,7 +133,7 @@ public class PessoaResourceTest extends EmprestimosApplicationTests {
     }
 
     @Test
-    public void nao_deve_ser_possivel_possivel_cadastrar_nenhuma_pessoa_menor_de_idade() throws Exception {
+    public void nao_deve_ser_possivel_cadastrar_nenhuma_pessoa_menor_de_idade() throws Exception {
         LocalDate nascimentoMenor = LocalDate.now().minus(15, ChronoUnit.YEARS);
 
         pessoaDTO.setNascimento(nascimentoMenor);
@@ -153,6 +153,26 @@ public class PessoaResourceTest extends EmprestimosApplicationTests {
                     .statusCode(HttpStatus.BAD_REQUEST.value())
                     .body("statusHttp", contains(400),
                             "mensagemUsuario", contains("Não é possível cadastrar menores de idade"));
+    }
+
+    @Test
+    public void nao_deve_ser_possivel_cadastrar_pessoa_com_mesmo_cpf_de_outra() throws Exception {
+        pessoaDTO.setCpf("61584806907");
+        given()
+                .request()
+                .header(HEADER_ACCEPT, ContentType.ANY)
+                .header(HEADER_CONTENT_TYPE, ContentType.JSON)
+                .body(pessoaDTO)
+            .when()
+            .post("/api/emprestimo/cliente")
+            .then()
+                    .log().headers()
+                .and()
+                    .log().body()
+                .and()
+                    .statusCode(HttpStatus.BAD_REQUEST.value())
+                    .body("statusHttp", contains(400),
+                            "mensagemUsuario", contains("Já existe outra pessoa cadastrada com esse CPF"));
     }
 
     /*
