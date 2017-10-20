@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 /**
  * Controlador do recurso de Pessoas na aplica&ccedil;&atilde;o
@@ -43,7 +44,7 @@ public class PessoaResource {
      * @return
      */
     @PostMapping
-    public ResponseEntity<PessoaDTO> criarNovo(@RequestBody PessoaDTO pessoaDto, HttpServletResponse response) {
+    public ResponseEntity<PessoaDTO> criarNovo(@RequestBody @Valid PessoaDTO pessoaDto, HttpServletResponse response) {
         Pessoa pessoa = PessoaDTO.PessoaDTOTransformer.criarEntidade(pessoaDto);
         pessoa = servico.salvar(pessoa);
 

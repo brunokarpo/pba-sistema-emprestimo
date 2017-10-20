@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.time.Month;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.when;
 
 /**
@@ -39,10 +39,20 @@ public class PessoaResourceTest extends EmprestimosApplicationTests {
     @MockBean
     private RestTemplate templateMock;
 
+    private PessoaDTO pessoaDTO;
+
     @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
+
+        pessoaDTO = new PessoaDTO();
+        pessoaDTO.setNome(NOME);
+        pessoaDTO.setCpf(CPF);
+        pessoaDTO.setSexo(SEXO);
+        pessoaDTO.setNascimento(NASCIMENTO);
+        pessoaDTO.setProfissao(PROFISSAO);
+        pessoaDTO.setSalario(SALARIO);
 
         CadastroPessoaDTO dto = new CadastroPessoaDTO();
         dto.setNome(NOME);
@@ -55,14 +65,6 @@ public class PessoaResourceTest extends EmprestimosApplicationTests {
 
     @Test
     public void deve_ser_possivel_cadastrar_uma_pessoa_nova() throws Exception {
-        final PessoaDTO pessoaDTO = new PessoaDTO();
-        pessoaDTO.setNome(NOME);
-        pessoaDTO.setCpf(CPF);
-        pessoaDTO.setSexo(SEXO);
-        pessoaDTO.setNascimento(NASCIMENTO);
-        pessoaDTO.setProfissao(PROFISSAO);
-        pessoaDTO.setSalario(SALARIO);
-
         given()
                 .request()
                 .header(HEADER_ACCEPT, ContentType.ANY)
@@ -85,9 +87,30 @@ public class PessoaResourceTest extends EmprestimosApplicationTests {
                         "risco", equalTo(RISCO_STRING));
     }
 
+    @Test
+    public void nao_deve_ser_possivel_cadastrar_pessoa_com_o_cpf_invalido() throws Exception {
+        pessoaDTO.setCpf("15699846221");
+
+        given()
+                .request()
+                .header(HEADER_ACCEPT, ContentType.ANY)
+                .header(HEADER_CONTENT_TYPE, ContentType.JSON)
+                .body(pessoaDTO)
+            .when()
+            .post("/api/emprestimo/cliente")
+            .then()
+                    .log().headers()
+                .and()
+                    .log().body()
+                .and()
+                    .statusCode(HttpStatus.BAD_REQUEST.value())
+                    .body("statusHttp", contains(400),
+                            "mensagemUsuario", contains("CPF inválido. Informe um CPF válido"));
+
+    }
+
     /*
      * TODO: testes a se fazer:
-     * * Tentar cadastrar pessoa com CPF inválido
      * * Tentar cadastrar pessoa com dados divergentes do sistema de Cadastro Positivo (no caso de exceção, não deverá ser salvo);
      */
 }

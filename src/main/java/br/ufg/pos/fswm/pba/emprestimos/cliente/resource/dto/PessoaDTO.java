@@ -2,6 +2,7 @@ package br.ufg.pos.fswm.pba.emprestimos.cliente.resource.dto;
 
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Pessoa;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Sexo;
+import org.hibernate.validator.constraints.br.CPF;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -14,6 +15,8 @@ import java.time.LocalDate;
  */
 public class PessoaDTO {
     private String nome;
+
+    @CPF(message = "CPF inválido. Informe um CPF válido")
     private String cpf;
     private LocalDate nascimento;
     private String profissao;
