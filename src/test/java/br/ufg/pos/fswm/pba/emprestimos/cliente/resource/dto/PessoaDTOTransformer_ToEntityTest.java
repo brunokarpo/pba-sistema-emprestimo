@@ -23,6 +23,7 @@ public class PessoaDTOTransformer_ToEntityTest {
     private static final BigDecimal SALARIO = new BigDecimal(3000.00);
     private static final LocalDate NASCIMENTO = LocalDate.of(1995, Month.FEBRUARY, 22);
     public static final String SEXO = "FEMININO";
+    public static final String DESEMPREGADO = "Desempregado";
 
     private static PessoaDTO dto;
     private static Pessoa pessoa;
@@ -68,5 +69,14 @@ public class PessoaDTOTransformer_ToEntityTest {
     @Test
     public void deve_preencher_sexo_da_pessoa() throws Exception {
         assertThat(pessoa.getSexo()).isEqualTo(Sexo.FEMININO);
+    }
+
+    @Test
+    public void deve_preencher_a_profissao_com_desempregado_quando_dto_estiver_vazio() throws Exception {
+        final PessoaDTO dto = new PessoaDTO();
+        dto.setSexo(SEXO);
+        final Pessoa pessoa = PessoaDTO.PessoaDTOTransformer.criarEntidade(dto);
+
+        assertThat(pessoa.getProfissao()).isEqualTo(DESEMPREGADO);
     }
 }

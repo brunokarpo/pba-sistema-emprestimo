@@ -2,6 +2,7 @@ package br.ufg.pos.fswm.pba.emprestimos.cliente.resource.dto;
 
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Pessoa;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Sexo;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.br.CPF;
 
 import java.math.BigDecimal;
@@ -85,6 +86,8 @@ public class PessoaDTO {
      */
     public static final class PessoaDTOTransformer {
 
+        public static final String DESEMPREGADO = "Desempregado";
+
         private PessoaDTOTransformer() {
             // classe utilitaria. Nao instanciavel
         }
@@ -99,7 +102,13 @@ public class PessoaDTO {
             final Pessoa pessoa = new Pessoa();
             pessoa.setNome(pessoaDto.getNome());
             pessoa.setCpf(pessoaDto.getCpf());
-            pessoa.setProfissao(pessoaDto.getProfissao());
+
+            String profissao = pessoaDto.getProfissao();
+            if (StringUtils.isBlank(profissao)) {
+                profissao = DESEMPREGADO;
+            }
+            pessoa.setProfissao(profissao);
+
             pessoa.setSalario(pessoaDto.getSalario());
             pessoa.setNascimento(pessoaDto.getNascimento());
             pessoa.setSexo(Sexo.fromNome(pessoaDto.getSexo()));

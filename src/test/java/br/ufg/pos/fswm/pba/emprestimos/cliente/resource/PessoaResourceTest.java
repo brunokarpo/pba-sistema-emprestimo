@@ -37,6 +37,7 @@ public class PessoaResourceTest extends EmprestimosApplicationTests {
     private static final int NIVEL_3 = 3;
     private static final String RISCO_STRING = "MEDIO";
     private static final String URL_CONSULTA_CADASTRO = "http://dev.consulta-cadastro.nao.existe.com:8080/api/cadastro-positivo/consultar/";
+    public static final String PROFISSAO_DESEMPREGADO = "Desempregado";
 
     @MockBean
     private RestTemplate templateMock;
@@ -109,6 +110,26 @@ public class PessoaResourceTest extends EmprestimosApplicationTests {
                     .body("statusHttp", contains(400),
                             "mensagemUsuario", contains("CPF inválido. Informe um CPF válido"));
 
+    }
+
+    @Test
+    public void deve_preencher_desempregado_caso_cliente_nao_informe_profissao() throws Exception {
+        pessoaDTO.setProfissao(null);
+
+        given()
+                .request()
+                .header(HEADER_ACCEPT, ContentType.ANY)
+                .header(HEADER_CONTENT_TYPE, ContentType.JSON)
+                .body(pessoaDTO)
+            .when()
+            .post("/api/emprestimo/cliente")
+            .then()
+                    .log().headers()
+                .and()
+                    .log().body()
+                .and()
+                    .statusCode(HttpStatus.CREATED.value())
+                    .body("profissao", equalTo(PROFISSAO_DESEMPREGADO));
     }
 
     @Test
