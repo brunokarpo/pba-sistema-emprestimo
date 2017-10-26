@@ -4,6 +4,7 @@ import br.ufg.pos.fswm.pba.emprestimos.EmprestimosApplicationTests;
 import br.ufg.pos.fswm.pba.emprestimos.cadastropositivo.conector.dto.CadastroPessoaDTO;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.resource.dto.PessoaDTO;
 import io.restassured.http.ContentType;
+import io.restassured.response.ValidatableResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -68,18 +69,7 @@ public class PessoaResourceTest extends EmprestimosApplicationTests {
 
     @Test
     public void deve_ser_possivel_cadastrar_uma_pessoa_nova() throws Exception {
-        given()
-                .request()
-                .header(HEADER_ACCEPT, ContentType.ANY)
-                .header(HEADER_CONTENT_TYPE, ContentType.JSON)
-                .body(pessoaDTO)
-        .when()
-        .post("/api/emprestimo/cliente")
-        .then()
-                .log().headers()
-            .and()
-                .log().body()
-            .and()
+        executarPostParaSalvarNovaPessoa()
                 .statusCode(HttpStatus.CREATED.value())
                 .headers("Location", equalTo("http://localhost:"+porta+"/api/emprestimo/cliente/" + CPF))
                 .body("nome", equalTo(NOME),
@@ -94,18 +84,7 @@ public class PessoaResourceTest extends EmprestimosApplicationTests {
     public void nao_deve_ser_possivel_cadastrar_pessoa_com_o_cpf_invalido() throws Exception {
         pessoaDTO.setCpf("15699846221");
 
-        given()
-                .request()
-                .header(HEADER_ACCEPT, ContentType.ANY)
-                .header(HEADER_CONTENT_TYPE, ContentType.JSON)
-                .body(pessoaDTO)
-            .when()
-            .post("/api/emprestimo/cliente")
-            .then()
-                    .log().headers()
-                .and()
-                    .log().body()
-                .and()
+        executarPostParaSalvarNovaPessoa()
                     .statusCode(HttpStatus.BAD_REQUEST.value())
                     .body("statusHttp", contains(400),
                             "mensagemUsuario", contains("CPF inválido. Informe um CPF válido"));
@@ -116,18 +95,7 @@ public class PessoaResourceTest extends EmprestimosApplicationTests {
     public void deve_preencher_desempregado_caso_cliente_nao_informe_profissao() throws Exception {
         pessoaDTO.setProfissao(null);
 
-        given()
-                .request()
-                .header(HEADER_ACCEPT, ContentType.ANY)
-                .header(HEADER_CONTENT_TYPE, ContentType.JSON)
-                .body(pessoaDTO)
-            .when()
-            .post("/api/emprestimo/cliente")
-            .then()
-                    .log().headers()
-                .and()
-                    .log().body()
-                .and()
+        executarPostParaSalvarNovaPessoa()
                     .statusCode(HttpStatus.CREATED.value())
                     .body("profissao", equalTo(PROFISSAO_DESEMPREGADO));
     }
@@ -138,18 +106,7 @@ public class PessoaResourceTest extends EmprestimosApplicationTests {
 
         pessoaDTO.setNascimento(nascimentoMenor);
 
-        given()
-                .request()
-                .header(HEADER_ACCEPT, ContentType.ANY)
-                .header(HEADER_CONTENT_TYPE, ContentType.JSON)
-                .body(pessoaDTO)
-            .when()
-            .post("/api/emprestimo/cliente")
-            .then()
-                    .log().headers()
-                .and()
-                    .log().body()
-                .and()
+        executarPostParaSalvarNovaPessoa()
                     .statusCode(HttpStatus.BAD_REQUEST.value())
                     .body("statusHttp", contains(400),
                             "mensagemUsuario", contains("Não é possível cadastrar menores de idade"));
@@ -158,7 +115,54 @@ public class PessoaResourceTest extends EmprestimosApplicationTests {
     @Test
     public void nao_deve_ser_possivel_cadastrar_pessoa_com_mesmo_cpf_de_outra() throws Exception {
         pessoaDTO.setCpf("61584806907");
-        given()
+        executarPostParaSalvarNovaPessoa()
+                    .statusCode(HttpStatus.BAD_REQUEST.value())
+                    .body("statusHttp", contains(400),
+                            "mensagemUsuario", contains("Já existe outra pessoa cadastrada com esse CPF"));
+    }
+
+    @Test
+    public void nao_deve_ser_possivel_cadastrar_pessoa_sem_informar_o_nome() throws Exception {
+        pessoaDTO.setNome(null);
+
+        executarPostParaSalvarNovaPessoa()
+                    .statusCode(HttpStatus.BAD_REQUEST.value())
+                    .body("statusHttp", contains(400),
+                            "mensagemUsuario", contains("O nome da pessoa é obrigatório"));
+    }
+
+    @Test
+    public void nao_deve_ser_possivel_cadastrar_pessoa_sem_informar_data_de_nascimento() throws Exception {
+        pessoaDTO.setNascimento(null);
+
+        executarPostParaSalvarNovaPessoa()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body("statusHttp", contains(400),
+                        "mensagemUsuario", contains("A data de nascimento é obrigatória"));
+    }
+
+    @Test
+    public void nao_deve_ser_possivel_cadstrar_pessoa_sem_informar_sexo() throws Exception {
+        pessoaDTO.setSexo(null);
+
+        executarPostParaSalvarNovaPessoa()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body("statusHttp", contains(400),
+                        "mensagemUsuario", contains("O sexo da pessoa é obrigatório"));
+    }
+
+    @Test
+    public void nao_deve_ser_possivel_cadastrar_pessoa_informando_sexo_invalido() throws Exception {
+        pessoaDTO.setSexo("Elefante azul de patas brancas");
+
+        executarPostParaSalvarNovaPessoa()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body("statusHttp", contains(400),
+                        "mensagemUsuario", contains("Valor 'Elefante azul de patas brancas' não reconhecido como Sexo válido"));
+    }
+
+    private ValidatableResponse executarPostParaSalvarNovaPessoa() {
+        return given()
                 .request()
                 .header(HEADER_ACCEPT, ContentType.ANY)
                 .header(HEADER_CONTENT_TYPE, ContentType.JSON)
@@ -169,10 +173,7 @@ public class PessoaResourceTest extends EmprestimosApplicationTests {
                     .log().headers()
                 .and()
                     .log().body()
-                .and()
-                    .statusCode(HttpStatus.BAD_REQUEST.value())
-                    .body("statusHttp", contains(400),
-                            "mensagemUsuario", contains("Já existe outra pessoa cadastrada com esse CPF"));
+                .and();
     }
 
     /*

@@ -3,8 +3,10 @@ package br.ufg.pos.fswm.pba.emprestimos.cliente.resource.dto;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Pessoa;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Sexo;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.br.CPF;
 
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -15,13 +17,19 @@ import java.time.LocalDate;
  * @date 18/10/17.
  */
 public class PessoaDTO {
+
+    @NotBlank(message = "O nome da pessoa é obrigatório")
     private String nome;
 
     @CPF(message = "CPF inválido. Informe um CPF válido")
     private String cpf;
+
+    @NotNull(message = "A data de nascimento é obrigatória")
     private LocalDate nascimento;
     private String profissao;
     private BigDecimal salario;
+
+    @NotBlank(message = "O sexo da pessoa é obrigatório")
     private String sexo;
     private String risco;
 

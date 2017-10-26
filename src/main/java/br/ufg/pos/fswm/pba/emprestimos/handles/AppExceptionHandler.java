@@ -42,6 +42,13 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, Arrays.asList(erro), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
+    @ExceptionHandler({IllegalArgumentException.class})
+    public ResponseEntity<Object> handleIllegalArgumentException(IllegalArgumentException ex, WebRequest request) {
+        String mensagemUsuario = ex.getMessage();
+        Erro erro = new Erro(HttpStatus.BAD_REQUEST.value(), mensagemUsuario, ex.getMessage());
+        return handleExceptionInternal(ex, Arrays.asList(erro), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
     private List<Erro> criarListaDeErros(BindingResult bindingResult) {
         final List<Erro> erros = new ArrayList<>();
 
