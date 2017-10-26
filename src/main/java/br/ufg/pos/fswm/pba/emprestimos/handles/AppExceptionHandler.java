@@ -1,5 +1,6 @@
 package br.ufg.pos.fswm.pba.emprestimos.handles;
 
+import br.ufg.pos.fswm.pba.emprestimos.cadastropositivo.servico.exceptions.DivergenciaDadosException;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.exceptions.PessoaServicoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -38,6 +39,13 @@ public class AppExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({PessoaServicoException.class})
     public ResponseEntity<Object> handlePessoaServicoException(PessoaServicoException ex, WebRequest request) {
         String mensagemUsuario = messageSource.getMessage(ex.getMessageProperty(), null, LocaleContextHolder.getLocale());
+        Erro erro = new Erro(HttpStatus.BAD_REQUEST.value(), mensagemUsuario, ex.getMessage());
+        return handleExceptionInternal(ex, Arrays.asList(erro), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+    }
+
+    @ExceptionHandler({DivergenciaDadosException.class})
+    public ResponseEntity<Object> handleDivergenciaDadosException(DivergenciaDadosException ex, WebRequest request) {
+        String mensagemUsuario = ex.getMessage();
         Erro erro = new Erro(HttpStatus.BAD_REQUEST.value(), mensagemUsuario, ex.getMessage());
         return handleExceptionInternal(ex, Arrays.asList(erro), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }

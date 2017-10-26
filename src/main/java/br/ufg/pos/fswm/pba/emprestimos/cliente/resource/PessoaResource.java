@@ -1,5 +1,6 @@
 package br.ufg.pos.fswm.pba.emprestimos.cliente.resource;
 
+import br.ufg.pos.fswm.pba.emprestimos.cadastropositivo.servico.exceptions.DivergenciaDadosException;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Pessoa;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.resource.dto.PessoaDTO;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.resource.evento.RecursoCriadoEvent;
@@ -45,7 +46,7 @@ public class PessoaResource {
      * @return
      */
     @PostMapping
-    public ResponseEntity<PessoaDTO> criarNovo(@RequestBody @Valid PessoaDTO pessoaDto, HttpServletResponse response) throws PessoaServicoException {
+    public ResponseEntity<PessoaDTO> criarNovo(@RequestBody @Valid PessoaDTO pessoaDto, HttpServletResponse response) throws PessoaServicoException, DivergenciaDadosException {
         Pessoa pessoa = PessoaDTO.PessoaDTOTransformer.criarEntidade(pessoaDto);
         pessoa = servico.salvar(pessoa);
 

@@ -161,6 +161,16 @@ public class PessoaResourceTest extends EmprestimosApplicationTests {
                         "mensagemUsuario", contains("Valor 'Elefante azul de patas brancas' não reconhecido como Sexo válido"));
     }
 
+    @Test
+    public void nao_deve_salvar_pessoa_caso_os_dados_recebidos_estejam_divergentes_dos_dados_do_sistema_de_cadastro_positivo() throws Exception {
+        pessoaDTO.setNascimento(LocalDate.of(1990, Month.APRIL, 18));
+
+        executarPostParaSalvarNovaPessoa()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body("statusHttp", contains(400),
+                        "mensagemUsuario", contains("O 'Nascimento' informado pelo cliente diverge do Sistema de Cadastro Positivo"));
+    }
+
     private ValidatableResponse executarPostParaSalvarNovaPessoa() {
         return given()
                 .request()
@@ -175,9 +185,4 @@ public class PessoaResourceTest extends EmprestimosApplicationTests {
                     .log().body()
                 .and();
     }
-
-    /*
-     * TODO: testes a se fazer:
-     * * Tentar cadastrar pessoa com dados divergentes do sistema de Cadastro Positivo (no caso de exceção, não deverá ser salvo);
-     */
 }

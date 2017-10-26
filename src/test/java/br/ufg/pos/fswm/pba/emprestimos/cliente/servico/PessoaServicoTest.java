@@ -1,6 +1,7 @@
 package br.ufg.pos.fswm.pba.emprestimos.cliente.servico;
 
 import br.ufg.pos.fswm.pba.emprestimos.cadastropositivo.servico.ConsultaCadastroServico;
+import br.ufg.pos.fswm.pba.emprestimos.cadastropositivo.servico.exceptions.DivergenciaDadosException;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Pessoa;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Sexo;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.repositorio.PessoaRepositorio;
@@ -23,6 +24,7 @@ import java.time.Month;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -104,6 +106,15 @@ public class PessoaServicoTest {
 
         expectedException.expect(CpfUnicidadeException.class);
         expectedException.expectMessage("Não pode salvar pessoa com mesmo CPF de outra");
+
+        sut.salvar(pessoa);
+    }
+
+    @Test
+    public void deve_retornar_exception_quando_comparacao_de_cadastro_positivo_apresentar_divergencia() throws Exception {
+        when(consultaCadastroMock.consultarCadastro(pessoa)).thenThrow(DivergenciaDadosException.class);
+
+        expectedException.expect(DivergenciaDadosException.class);
 
         sut.salvar(pessoa);
     }

@@ -45,7 +45,7 @@ public class PessoaServicoImpl implements PessoaServico {
     }
 
     @Override
-    public Pessoa salvar(Pessoa pessoa) throws PessoaServicoException {
+    public Pessoa salvar(Pessoa pessoa) throws PessoaServicoException, DivergenciaDadosException {
 
         if (LocalDate.now().compareTo(pessoa.getNascimento()) < 18) {
             LOG.warn("Pessoa menor de idade. Não vou salvar.");
@@ -59,12 +59,6 @@ public class PessoaServicoImpl implements PessoaServico {
         }
 
         pessoa = pessoaRepositorio.save(pessoa);
-        try {
-            return consultaCadastroServico.consultarCadastro(pessoa);
-        } catch (DivergenciaDadosException e) {
-            // TODO tratar essa excecao. Testar
-            e.printStackTrace();
-            return null;
-        }
+        return consultaCadastroServico.consultarCadastro(pessoa);
     }
 }
