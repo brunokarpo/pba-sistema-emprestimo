@@ -13,19 +13,19 @@ import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Month;
 import java.time.temporal.ChronoUnit;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.when;
 
 /**
  * @author Bruno Nogueira de Oliveira
  * @date 18/10/17.
  */
-public class PessoaResourceTest extends EmprestimosApplicationTests {
+public class PessoaResource_CadastroTest extends EmprestimosApplicationTests {
 
     private static final String NOME = "Milena Sophia Gomes";
     private static final String CPF = "37270463689";
