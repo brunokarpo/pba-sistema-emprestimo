@@ -1,4 +1,4 @@
-package br.ufg.pos.fswm.pba.emprestimos.cliente.resource;
+package br.ufg.pos.fswm.pba.emprestimos.simulacao.resource;
 
 import br.ufg.pos.fswm.pba.emprestimos.EmprestimosApplicationTests;
 import br.ufg.pos.fswm.pba.emprestimos.cadastropositivo.conector.dto.CadastroPessoaDTO;
@@ -20,14 +20,12 @@ import static org.mockito.Mockito.when;
  * @author Bruno Nogueira de Oliveira
  * @date 26/10/17.
  */
-public class PessoaResource_SimulacaoTest extends EmprestimosApplicationTests{
+public class SimulacaoResourceTest extends EmprestimosApplicationTests{
 
     private static final String NOME = "Juliana Maria Oliveira";
     private static final String CPF = "61584806907";
     private static final String SEXO = "FEMININO";
     private static final LocalDate NASCIMENTO = LocalDate.of(1989, Month.MARCH, 3);
-//    private static final String PROFISSAO = "Estilista";
-//    private static final BigDecimal SALARIO = new BigDecimal(5000.00);
     private static final int RISCO = 5;
     private static final String URL_CONSULTA_CADASTRO = "http://dev.consulta-cadastro.nao.existe.com:8080/api/cadastro-positivo/consultar/";
 
