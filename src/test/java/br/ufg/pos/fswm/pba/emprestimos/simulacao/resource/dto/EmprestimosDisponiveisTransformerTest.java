@@ -15,19 +15,19 @@ import static org.assertj.core.api.Assertions.assertThat;
  */
 public class EmprestimosDisponiveisTransformerTest {
 
-    public static final String CODIGO_EMPRESTIMO_1 = "c018";
-    public static final String TITULO_EMPRESTIMO_1 = "Crédito para férias";
-    public static final BigDecimal VALOR_CREDITO_EMPRESTIMO_1 = new BigDecimal("500.0");
-    public static final BigDecimal JUROS_MES_EMPRESTIMO_1 = new BigDecimal("0.1");
-    public static final BigDecimal PARCELAS_EMPRESTIMO_1 = new BigDecimal("78.58");
-    public static final int PRESTACOES_EMPRESTIMO_1 = 7;
+    private static final String CODIGO_EMPRESTIMO_1 = "c018";
+    private static final String TITULO_EMPRESTIMO_1 = "Crédito para férias";
+    private static final BigDecimal VALOR_CREDITO_EMPRESTIMO_1 = new BigDecimal("500.0");
+    private static final BigDecimal JUROS_MES_EMPRESTIMO_1 = new BigDecimal("0.1");
+    private static final BigDecimal PARCELAS_EMPRESTIMO_1 = new BigDecimal("78.58");
+    private static final int PRESTACOES_EMPRESTIMO_1 = 7;
 
-    public static final String CODIGO_EMPRESTIMO_2 = "H453";
-    public static final String TITULO_EMPRESTIMO_2 = "Crédito para emergências";
-    public static final BigDecimal VALOR_CREDITO_EMPRESTIMO_2 = new BigDecimal("1000.0");
-    public static final BigDecimal JUROS_MES_EMPRESTIMO_2 = new BigDecimal("0.05");
-    public static final BigDecimal PARCELAS_EMPRESTIMO_2 = new BigDecimal("105.00");
-    public static final int PRESTACOES_EMPRESTIMO_2 = 10;
+    private static final String CODIGO_EMPRESTIMO_2 = "H453";
+    private static final String TITULO_EMPRESTIMO_2 = "Crédito para emergências";
+    private static final BigDecimal VALOR_CREDITO_EMPRESTIMO_2 = new BigDecimal("1000.0");
+    private static final BigDecimal JUROS_MES_EMPRESTIMO_2 = new BigDecimal("0.05");
+    private static final BigDecimal PARCELAS_EMPRESTIMO_2 = new BigDecimal("105.00");
+    private static final int PRESTACOES_EMPRESTIMO_2 = 10;
 
     private static Emprestimo emprestimo1;
     private static Emprestimo emprestimo2;
@@ -42,6 +42,7 @@ public class EmprestimosDisponiveisTransformerTest {
         emprestimo1.setCredito(VALOR_CREDITO_EMPRESTIMO_1);
         emprestimo1.setJurosMes(JUROS_MES_EMPRESTIMO_1);
         emprestimo1.setParcelas(PARCELAS_EMPRESTIMO_1);
+        emprestimo1.setPrestacoes(PRESTACOES_EMPRESTIMO_1);
 
         emprestimo2 = new Emprestimo();
         emprestimo2.setCodigo(CODIGO_EMPRESTIMO_2);
@@ -56,6 +57,47 @@ public class EmprestimosDisponiveisTransformerTest {
 
     @Test
     public void deve_criar_dto_de_emprestimos_disponiveis_na_aplicacao() throws Exception {
-        assertThat(dto).isNotNull().as("Objeto não deveria retornar com valor nulo");
+        assertThat(dto).describedAs("Objeto não deveria ter retornado com valor nulo").isNotNull();
+    }
+
+    @Test
+    public void deve_preencher_lista_de_emprestimos_disponiveis_no_dto() throws Exception {
+        assertThat(dto.getEmprestimos()).hasSize(2);
+    }
+
+    @Test
+    public void deve_preencher_codigo_dos_emprestimos_no_dto() throws Exception {
+        assertThat(dto.getEmprestimos()).extracting("codigo")
+                                        .containsExactlyInAnyOrder(CODIGO_EMPRESTIMO_1, CODIGO_EMPRESTIMO_2);
+    }
+
+    @Test
+    public void deve_preencher_titulos_dos_emprestimos_no_dto() throws Exception {
+        assertThat(dto.getEmprestimos()).extracting("titulo")
+                                        .containsExactlyInAnyOrder(TITULO_EMPRESTIMO_2, TITULO_EMPRESTIMO_1);
+    }
+
+    @Test
+    public void deve_preencher_valor_do_credito_dos_emprestimos_no_dto() throws Exception {
+        assertThat(dto.getEmprestimos()).extracting("credito")
+                                        .containsExactlyInAnyOrder(VALOR_CREDITO_EMPRESTIMO_1, VALOR_CREDITO_EMPRESTIMO_2);
+    }
+
+    @Test
+    public void deve_preencher_juros_mensais_dos_emprestimos_no_dto() throws Exception {
+        assertThat(dto.getEmprestimos()).extracting("jurosMes")
+                                        .containsExactlyInAnyOrder(JUROS_MES_EMPRESTIMO_1, JUROS_MES_EMPRESTIMO_2);
+    }
+
+    @Test
+    public void deve_preencher_valor_das_parcelas_dos_emprestimos_no_dto() throws Exception {
+        assertThat(dto.getEmprestimos()).extracting("parcelas")
+                                        .containsExactlyInAnyOrder(PARCELAS_EMPRESTIMO_1, PARCELAS_EMPRESTIMO_2);
+    }
+
+    @Test
+    public void deve_preencher_quantidades_de_parcelas_dos_emprestimos_no_dto() throws Exception {
+        assertThat(dto.getEmprestimos()).extracting("prestacoes")
+                                        .containsExactlyInAnyOrder(PRESTACOES_EMPRESTIMO_2, PRESTACOES_EMPRESTIMO_1);
     }
 }
