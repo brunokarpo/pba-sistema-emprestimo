@@ -1,5 +1,6 @@
 package br.ufg.pos.fswm.pba.emprestimos.simulacao.resource;
 
+import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.exceptions.CpfNaoEncontradoException;
 import br.ufg.pos.fswm.pba.emprestimos.simulacao.modelo.Emprestimo;
 import br.ufg.pos.fswm.pba.emprestimos.simulacao.resource.dto.EmprestimosDisponiveisDTO;
 import br.ufg.pos.fswm.pba.emprestimos.simulacao.servico.SimulacaoServico;
@@ -28,7 +29,7 @@ public class SimulacaoResource {
     private SimulacaoServico simulacaoServico;
 
     @GetMapping("/{cpf}")
-    public ResponseEntity<EmprestimosDisponiveisDTO> simularEmprestimo(@PathVariable("cpf") String cpf) {
+    public ResponseEntity<EmprestimosDisponiveisDTO> simularEmprestimo(@PathVariable("cpf") String cpf) throws CpfNaoEncontradoException {
         final List<Emprestimo> emprestimos = simulacaoServico.simularEmprestimo(cpf);
         final EmprestimosDisponiveisDTO dto = EmprestimosDisponiveisDTO.Transformer.criarDto(emprestimos);
         return new ResponseEntity<>(dto, HttpStatus.OK);

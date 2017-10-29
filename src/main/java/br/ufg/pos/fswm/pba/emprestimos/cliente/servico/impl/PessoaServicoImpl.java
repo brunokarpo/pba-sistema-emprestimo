@@ -61,4 +61,10 @@ public class PessoaServicoImpl implements PessoaServico {
         pessoa = pessoaRepositorio.save(pessoa);
         return consultaCadastroServico.consultarCadastro(pessoa);
     }
+
+    @Override
+    public Pessoa buscarPorCpf(String cpf) {
+        // TODO: implementar e testar
+        return null;
+    }
 }
