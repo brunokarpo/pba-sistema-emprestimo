@@ -5,6 +5,7 @@ import br.ufg.pos.fswm.pba.emprestimos.cadastropositivo.modelo.Risco;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -42,9 +43,10 @@ public class Contrato implements Serializable {
     private BigDecimal jurosMes;
 
     @ElementCollection(targetClass = Risco.class, fetch = FetchType.EAGER)
-    @JoinTable(name = "risco_contrato", joinColumns = {@JoinColumn(name = "id_contrato")},
-                inverseJoinColumns = {@JoinColumn(name = "risco")})
-    private List<Risco> riscosAceitos;
+    @JoinTable(name = "risco_contrato", joinColumns = {@JoinColumn(name = "id_contrato")})
+    @Column(name = "risco", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Collection<Risco> riscosAceitos;
 
     public Long getId() {
         return id;
@@ -86,11 +88,11 @@ public class Contrato implements Serializable {
         this.percentualSalarioEmprestimo = percentualSalarioEmprestimo;
     }
 
-    public List<Risco> getRiscosAceitos() {
+    public Collection<Risco> getRiscosAceitos() {
         return riscosAceitos;
     }
 
-    public void setRiscosAceitos(List<Risco> riscosAceitos) {
+    public void setRiscosAceitos(Collection<Risco> riscosAceitos) {
         this.riscosAceitos = riscosAceitos;
     }
 
