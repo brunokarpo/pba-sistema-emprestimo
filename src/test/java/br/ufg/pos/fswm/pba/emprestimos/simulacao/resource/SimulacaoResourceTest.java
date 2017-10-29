@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.Arrays;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
@@ -62,11 +63,11 @@ public class SimulacaoResourceTest extends EmprestimosApplicationTests{
                 .log().body()
             .and()
                 .statusCode(HttpStatus.OK.value())
-                .body("emprestimos-disponiveis.codigo", containsInAnyOrder("c018", "h453"),
-                        "emprestimos-disponiveis.titulo", containsInAnyOrder("Cŕedito para férias", "Crédito para emergências"),
-                        "emprestimos-disponiveis.credito", containsInAnyOrder(2500.00, 5000.00),
-                        "emprestimos-disponiveis.jurosMes", containsInAnyOrder(0.1, 0.05),
-                        "emprestimos-disponiveis.prestacoes", containsInAnyOrder(8, 10),
-                        "emprestimos-disponiveis.parcelas", containsInAnyOrder(385.0, 525.0));
+                .body("emprestimos-disponiveis.codigo", containsInAnyOrder("c018", "h453"))
+                .body("emprestimos-disponiveis.titulo", containsInAnyOrder("Crédito para férias", "Crédito para emergências"))
+                .body("emprestimos-disponiveis.credito", containsInAnyOrder(comparesEqualTo(2500.0f), comparesEqualTo(5000.0f)))
+                .body("emprestimos-disponiveis.jurosMes", containsInAnyOrder(comparesEqualTo(0.1f), comparesEqualTo(0.05f)))
+                .body("emprestimos-disponiveis.prestacoes", containsInAnyOrder(8, 10))
+                .body("emprestimos-disponiveis.parcelas", containsInAnyOrder(comparesEqualTo(385.0f), comparesEqualTo(525.0f)));
     }
 }
