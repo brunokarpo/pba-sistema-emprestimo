@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ContratoRepositorioTest {
 
     @Autowired
-    private ContratoRespositorio sut;
+    private ContratoRepositorio sut;
 
     @Test
     public void deve_ser_possivel_buscar_contrato_utilizando_codigo_como_parametro_de_busca() throws Exception {

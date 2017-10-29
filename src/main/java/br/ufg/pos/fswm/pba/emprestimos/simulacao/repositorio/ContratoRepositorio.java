@@ -13,7 +13,7 @@ import java.util.Optional;
  * @date 29/10/17.
  */
 @Repository
-public interface ContratoRespositorio extends JpaRepository<Contrato, Long> {
+public interface ContratoRepositorio extends JpaRepository<Contrato, Long> {
 
     /**
      * Retorna um contrato utilizando o código como parâmetro de busca;
