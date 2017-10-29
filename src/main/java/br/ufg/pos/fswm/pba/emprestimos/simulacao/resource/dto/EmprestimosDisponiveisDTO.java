@@ -1,6 +1,7 @@
 package br.ufg.pos.fswm.pba.emprestimos.simulacao.resource.dto;
 
 import br.ufg.pos.fswm.pba.emprestimos.simulacao.modelo.Emprestimo;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.List;
 public class EmprestimosDisponiveisDTO {
 
 
+    @JsonProperty("emprestimos-disponiveis")
     private List<EmprestimoDisponivel> emprestimos;
 
     public EmprestimosDisponiveisDTO() {

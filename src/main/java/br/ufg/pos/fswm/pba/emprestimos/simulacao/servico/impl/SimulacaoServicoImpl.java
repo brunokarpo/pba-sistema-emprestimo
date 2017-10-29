@@ -1,5 +1,6 @@
 package br.ufg.pos.fswm.pba.emprestimos.simulacao.servico.impl;
 
+import br.ufg.pos.fswm.pba.emprestimos.cadastropositivo.servico.exceptions.DivergenciaDadosException;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Pessoa;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.PessoaServico;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.exceptions.CpfNaoEncontradoException;
@@ -8,6 +9,8 @@ import br.ufg.pos.fswm.pba.emprestimos.simulacao.modelo.Emprestimo;
 import br.ufg.pos.fswm.pba.emprestimos.simulacao.repositorio.ContratoRepositorio;
 import br.ufg.pos.fswm.pba.emprestimos.simulacao.servico.SimulacaoServico;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +21,8 @@ import java.util.List;
  * @author Bruno Nogueira de Oliveira
  * @date 28/10/17.
  */
+@Service
+@Primary
 public class SimulacaoServicoImpl implements SimulacaoServico {
 
     private final PessoaServico pessoaServico;
@@ -36,7 +41,7 @@ public class SimulacaoServicoImpl implements SimulacaoServico {
     }
 
     @Override
-    public List<Emprestimo> simularEmprestimo(String cpf) throws CpfNaoEncontradoException {
+    public List<Emprestimo> simularEmprestimo(String cpf) throws CpfNaoEncontradoException, DivergenciaDadosException {
         Pessoa pessoa = pessoaServico.buscarPorCpf(cpf);
 
         List<Contrato> contratos = contratoRepositorio.findByRiscosAceitos(pessoa.getRisco());

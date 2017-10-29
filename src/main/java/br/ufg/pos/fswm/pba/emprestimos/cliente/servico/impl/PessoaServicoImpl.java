@@ -5,6 +5,7 @@ import br.ufg.pos.fswm.pba.emprestimos.cadastropositivo.servico.exceptions.Diver
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Pessoa;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.repositorio.PessoaRepositorio;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.PessoaServico;
+import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.exceptions.CpfNaoEncontradoException;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.exceptions.CpfUnicidadeException;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.exceptions.MenorDeIdadeException;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.exceptions.PessoaServicoException;
@@ -63,8 +64,9 @@ public class PessoaServicoImpl implements PessoaServico {
     }
 
     @Override
-    public Pessoa buscarPorCpf(String cpf) {
-        // TODO: implementar e testar
-        return null;
+    public Pessoa buscarPorCpf(String cpf) throws CpfNaoEncontradoException, DivergenciaDadosException {
+        final Pessoa pessoa = pessoaRepositorio.findByCpf(cpf).orElseThrow(() -> new CpfNaoEncontradoException("Nao existe pessoa cadastrada com esse CPF"));
+
+        return consultaCadastroServico.consultarCadastro(pessoa);
     }
 }

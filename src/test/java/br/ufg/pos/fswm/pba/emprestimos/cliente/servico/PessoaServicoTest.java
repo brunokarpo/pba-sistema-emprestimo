@@ -5,6 +5,7 @@ import br.ufg.pos.fswm.pba.emprestimos.cadastropositivo.servico.exceptions.Diver
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Pessoa;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Sexo;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.repositorio.PessoaRepositorio;
+import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.exceptions.CpfNaoEncontradoException;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.exceptions.CpfUnicidadeException;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.exceptions.MenorDeIdadeException;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.exceptions.PessoaServicoException;
@@ -24,6 +25,7 @@ import java.time.Month;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -117,5 +119,31 @@ public class PessoaServicoTest {
         expectedException.expect(DivergenciaDadosException.class);
 
         sut.salvar(pessoa);
+    }
+
+    @Test
+    public void deve_ser_possivel_buscar_pessoa_utilizando_o_cpf_como_parametro_de_busca() throws Exception {
+        when(repositorioMock.findByCpf(CPF)).thenReturn(Optional.of(pessoa));
+        when(consultaCadastroMock.consultarCadastro(pessoa)).thenReturn(pessoa);
+
+        Pessoa procurada = sut.buscarPorCpf(CPF);
+
+        assertThat(procurada).isNotNull();
+    }
+
+    @Test
+    public void deve_retornar_excecao_caso_cpf_procurado_nao_exista() throws Exception {
+        expectedException.expect(CpfNaoEncontradoException.class);
+
+        sut.buscarPorCpf(CPF);
+    }
+
+    @Test
+    public void deve_consultar_o_cadastro_da_pessoa_ao_procurar_por_cpf() throws Exception {
+        when(repositorioMock.findByCpf(CPF)).thenReturn(Optional.of(pessoa));
+
+        sut.buscarPorCpf(CPF);
+
+        verify(consultaCadastroMock).consultarCadastro(pessoa);
     }
 }

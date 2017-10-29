@@ -33,5 +33,5 @@ public interface PessoaServico {
      * @param cpf CPF da pessoa a ser pesquisada
      * @return {@link Pessoa}
      */
-    Pessoa buscarPorCpf(String cpf) throws CpfNaoEncontradoException;
+    Pessoa buscarPorCpf(String cpf) throws CpfNaoEncontradoException, DivergenciaDadosException;
 }

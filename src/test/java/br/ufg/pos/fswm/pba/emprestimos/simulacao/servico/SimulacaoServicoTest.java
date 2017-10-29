@@ -1,6 +1,7 @@
 package br.ufg.pos.fswm.pba.emprestimos.simulacao.servico;
 
 import br.ufg.pos.fswm.pba.emprestimos.cadastropositivo.modelo.Risco;
+import br.ufg.pos.fswm.pba.emprestimos.cadastropositivo.servico.exceptions.DivergenciaDadosException;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Pessoa;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Sexo;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.PessoaServico;
@@ -99,7 +100,7 @@ public class SimulacaoServicoTest {
         when(contratoRepositorioMock.findByRiscosAceitos(RISCO)).thenReturn(Arrays.asList(contrato1, contrato2));
     }
 
-    private void configurarMockPessoa() throws CpfNaoEncontradoException {
+    private void configurarMockPessoa() throws Exception {
         pessoa = new Pessoa();
         pessoa.setNome(NOME);
         pessoa.setCpf(CPF);
@@ -138,13 +139,4 @@ public class SimulacaoServicoTest {
                         tuple(CODIGO_CONTRATO_2, TITULO_CONTRATO_2, BigDecimal.valueOf(3000), JUROS_MES_CONTRATO_2, new Integer(5), new BigDecimal("630.000")));
     }
 
-
-    /*
-     * TODO: como deve funcionar:
-     * * Ao receber um CPF deve verificar se o usuário existe cadastrado na aplicação.
-     * * * Caso o cliente não existir na aplicação, deve retornar uma exceção para pedir para cadastrar o usuário primeiramente.
-     * * * Ao pesquisar o usuário ele deverá retornar com o nível de risco, pesquisado no sistema de cadastro positivo.
-     * * Com o nível de risco, deve buscar quais são os 'contratos' disponíveis para aquele nível de risco
-     * * Deve preencher o(s) emprestímo(s) para retornar de acordo com os dados do cliente.
-     */
 }

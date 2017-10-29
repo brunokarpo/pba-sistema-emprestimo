@@ -15,7 +15,7 @@ public class CpfNaoEncontradoException extends PessoaServicoException {
      *
      * @param message
      */
-    CpfNaoEncontradoException(String message) {
+    public CpfNaoEncontradoException(String message) {
         super(MESSAGE_PROPERTY, message);
     }
 }
