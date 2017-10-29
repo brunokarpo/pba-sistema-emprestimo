@@ -10,7 +10,7 @@ public abstract class PessoaServicoException extends Exception {
 
     private final String messageProperty;
 
-    PessoaServicoException(String messageProperty, String message) {
+    public PessoaServicoException(String messageProperty, String message) {
         super(message);
         this.messageProperty = messageProperty;
     }

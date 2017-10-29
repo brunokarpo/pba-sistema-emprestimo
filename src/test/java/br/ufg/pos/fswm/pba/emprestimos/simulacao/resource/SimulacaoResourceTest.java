@@ -17,6 +17,7 @@ import java.util.Arrays;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.contains;
 import static org.mockito.Mockito.when;
 
 /**
@@ -36,13 +37,14 @@ public class SimulacaoResourceTest extends EmprestimosApplicationTests{
     private RestTemplate templateMock;
 
     private PessoaDTO pessoaDTO;
+    private CadastroPessoaDTO dto;
 
     @Override
     @Before
     public void setUp() throws Exception {
         super.setUp();
 
-        CadastroPessoaDTO dto = new CadastroPessoaDTO();
+        dto = new CadastroPessoaDTO();
         dto.setNome(NOME);
         dto.setCpf(CPF);
         dto.setNascimento(NASCIMENTO);
@@ -69,5 +71,23 @@ public class SimulacaoResourceTest extends EmprestimosApplicationTests{
                 .body("emprestimos-disponiveis.jurosMes", containsInAnyOrder(comparesEqualTo(0.1f), comparesEqualTo(0.05f)))
                 .body("emprestimos-disponiveis.prestacoes", containsInAnyOrder(8, 10))
                 .body("emprestimos-disponiveis.parcelas", containsInAnyOrder(comparesEqualTo(385.0f), comparesEqualTo(525.0f)));
+    }
+
+    @Test
+    public void nao_deve_gerar_emprestimo_para_pessoa_negativada() throws Exception {
+        dto.setRisco(5);
+        given()
+                .pathParam("cpf", CPF)
+        .when()
+        .get("/api/emprestimo/simulacao/{cpf}")
+        .then()
+                .log().headers()
+            .and()
+                .log().body()
+            .and()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body("statusHttp", contains(400),
+                        "mensagemUsuario", contains("Não é possível gerar empréstimo para pessoa negativada"));
+
     }
 }

@@ -3,6 +3,7 @@ package br.ufg.pos.fswm.pba.emprestimos.simulacao.servico;
 import br.ufg.pos.fswm.pba.emprestimos.cadastropositivo.servico.exceptions.DivergenciaDadosException;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.exceptions.CpfNaoEncontradoException;
 import br.ufg.pos.fswm.pba.emprestimos.simulacao.modelo.Emprestimo;
+import br.ufg.pos.fswm.pba.emprestimos.simulacao.servico.exceptions.PessoaNegativadaException;
 
 import java.util.List;
 
@@ -21,5 +22,5 @@ public interface SimulacaoServico {
      * @param cpf CPF da pessoa que deseja a simula&ccedil;&atilde;o do empr&eacute;stimo
      * @return A lista de poss&iacute;veis empr&eacute;stimos que podem ser realizados pela pessoa.
      */
-    List<Emprestimo> simularEmprestimo(String cpf) throws CpfNaoEncontradoException, DivergenciaDadosException;
+    List<Emprestimo> simularEmprestimo(String cpf) throws CpfNaoEncontradoException, DivergenciaDadosException, PessoaNegativadaException;
 }

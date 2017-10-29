@@ -5,6 +5,7 @@ import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.exceptions.CpfNaoEncontra
 import br.ufg.pos.fswm.pba.emprestimos.simulacao.modelo.Emprestimo;
 import br.ufg.pos.fswm.pba.emprestimos.simulacao.resource.dto.EmprestimosDisponiveisDTO;
 import br.ufg.pos.fswm.pba.emprestimos.simulacao.servico.SimulacaoServico;
+import br.ufg.pos.fswm.pba.emprestimos.simulacao.servico.exceptions.PessoaNegativadaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class SimulacaoResource {
     private SimulacaoServico simulacaoServico;
 
     @GetMapping("/{cpf}")
-    public ResponseEntity<EmprestimosDisponiveisDTO> simularEmprestimo(@PathVariable("cpf") String cpf) throws CpfNaoEncontradoException, DivergenciaDadosException {
+    public ResponseEntity<EmprestimosDisponiveisDTO> simularEmprestimo(@PathVariable("cpf") String cpf) throws CpfNaoEncontradoException, DivergenciaDadosException, PessoaNegativadaException {
         final List<Emprestimo> emprestimos = simulacaoServico.simularEmprestimo(cpf);
         final EmprestimosDisponiveisDTO dto = EmprestimosDisponiveisDTO.Transformer.criarDto(emprestimos);
         return new ResponseEntity<>(dto, HttpStatus.OK);

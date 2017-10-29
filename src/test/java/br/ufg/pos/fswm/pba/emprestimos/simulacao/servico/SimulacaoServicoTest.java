@@ -9,6 +9,7 @@ import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.exceptions.CpfNaoEncontra
 import br.ufg.pos.fswm.pba.emprestimos.simulacao.modelo.Contrato;
 import br.ufg.pos.fswm.pba.emprestimos.simulacao.modelo.Emprestimo;
 import br.ufg.pos.fswm.pba.emprestimos.simulacao.repositorio.ContratoRepositorio;
+import br.ufg.pos.fswm.pba.emprestimos.simulacao.servico.exceptions.PessoaNegativadaException;
 import br.ufg.pos.fswm.pba.emprestimos.simulacao.servico.impl.SimulacaoServicoImpl;
 import org.junit.Before;
 import org.junit.Rule;
@@ -139,4 +140,12 @@ public class SimulacaoServicoTest {
                         tuple(CODIGO_CONTRATO_2, TITULO_CONTRATO_2, BigDecimal.valueOf(3000), JUROS_MES_CONTRATO_2, new Integer(5), new BigDecimal("630.000")));
     }
 
+    @Test
+    public void deve_lancar_excecao_caso_simulacao_seja_solicitada_para_pessoa_negativada() throws Exception {
+        pessoa.setRisco(Risco.NEGATIVADO);
+
+        expectedException.expect(PessoaNegativadaException.class);
+
+        sut.simularEmprestimo(CPF);
+    }
 }
