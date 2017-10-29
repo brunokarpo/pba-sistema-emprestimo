@@ -90,4 +90,20 @@ public class SimulacaoResourceTest extends EmprestimosApplicationTests{
                         "mensagemUsuario", contains("Não é possível gerar empréstimo para pessoa negativada"));
 
     }
+
+    @Test
+    public void nao_deve_gerar_emprestimo_caso_cpf_nao_exista_na_aplicacao() throws Exception {
+        given()
+                .pathParam("cpf", "37467994060")
+        .when()
+        .get("/api/emprestimo/simulacao/{cpf}")
+        .then()
+                .log().headers()
+            .and()
+                .log().body()
+            .and()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .body("statusHttp", contains(400),
+                        "mensagemUsuario", contains("CPF não cadastrado na aplicação."));
+    }
 }

@@ -8,7 +8,7 @@ package br.ufg.pos.fswm.pba.emprestimos.cliente.servico.exceptions;
  */
 public class CpfNaoEncontradoException extends PessoaServicoException {
 
-    private static final String MESSAGE_PROPERTY = "";
+    private static final String MESSAGE_PROPERTY = "servico.pessoa.cpf.inexistente";
 
     /**
      * Construtor padr&atilde;o da exce&ccedil;&atilde;o.
