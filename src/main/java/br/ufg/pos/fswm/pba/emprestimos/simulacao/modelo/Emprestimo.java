@@ -1,5 +1,7 @@
 package br.ufg.pos.fswm.pba.emprestimos.simulacao.modelo;
 
+import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Pessoa;
+
 import java.math.BigDecimal;
 
 /**
@@ -13,6 +15,37 @@ public class Emprestimo {
     private BigDecimal jurosMes;
     private BigDecimal parcelas;
     private Integer prestacoes;
+
+    /**
+     * Construtor padr&atilde;o da classe;
+     */
+    public Emprestimo() {
+    }
+
+    /**
+     * Cria um empr&eacute;stimo atrav&eacute;s da Pessoa solicitando o empr&eacute;stimo e o contrato dispon&iacute;vel.
+     *
+     * @param pessoa {@link Pessoa}
+     * @param contrato {@link Contrato}
+     */
+    public Emprestimo(Pessoa pessoa, Contrato contrato) {
+        setCodigo(contrato.getCodigo());
+        setTitulo(contrato.getTitulo());
+        setJurosMes(contrato.getJurosMes());
+
+        final BigDecimal creditoDisponibilizado = pessoa.getSalario().multiply(contrato.getPercentualSalarioEmprestimo());
+        setCredito(creditoDisponibilizado);
+
+        // Valor mensal comprometido
+        final BigDecimal valorMensalComprometido = pessoa.getSalario().multiply(contrato.getPercentualSalarioComprometido());
+
+        final double prestacoesDouble = Math.ceil( creditoDisponibilizado.doubleValue() / valorMensalComprometido.doubleValue() );
+        final Integer prestacoes = (int) prestacoesDouble;
+        setPrestacoes(prestacoes);
+
+        final BigDecimal jurosCalculado = valorMensalComprometido.multiply(contrato.getJurosMes());
+        setParcelas(jurosCalculado.add(valorMensalComprometido));
+    }
 
     public void setCodigo(String codigo) {
         this.codigo = codigo;

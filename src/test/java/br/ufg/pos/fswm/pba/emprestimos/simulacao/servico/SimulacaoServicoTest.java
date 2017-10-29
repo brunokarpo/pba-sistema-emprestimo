@@ -46,14 +46,14 @@ public class SimulacaoServicoTest {
     private static final List<Risco> RISCOS_ACEITOS_CONTRATO_1 = Arrays.asList(RISCO);
     private static final String CODIGO_CONTRATO_1 = "a123";
     private static final String TITULO_CONTRATO_1 = "titulo contrato 1";
-    private static final BigDecimal PERCENTUAL_SALARIO_EMPRESTIMO_CONTRATO_1 = new BigDecimal("0.5");
-    private static final BigDecimal PERCENTUAL_SALARIO_COMPROMETIDO_CONTRATO_1 = new BigDecimal("0.07");
-    private static final BigDecimal JUROS_MES_CONTRATO_1 = new BigDecimal("0.1");
+    private static final BigDecimal PERCENTUAL_SALARIO_EMPRESTIMO_CONTRATO_1 = BigDecimal.valueOf(0.5);
+    private static final BigDecimal PERCENTUAL_SALARIO_COMPROMETIDO_CONTRATO_1 = BigDecimal.valueOf(0.07);
+    private static final BigDecimal JUROS_MES_CONTRATO_1 = BigDecimal.valueOf(0.1);
     private static final String CODIGO_CONTRATO_2 = "b456";
     private static final String TITULO_CONTRATO_2 = "titulo contrato 2";
-    private static final BigDecimal PERCENTUAL_SALARIO_EMPRESTIMO_CONTRATO_2 = new BigDecimal("1");
-    private static final BigDecimal PERCENTUAL_SALARIO_COMPROMETIDO_CONTRATO_2 = new BigDecimal("0.2");
-    private static final BigDecimal JUROS_MES_CONTRATO_2 = new BigDecimal("0.05");
+    private static final BigDecimal PERCENTUAL_SALARIO_EMPRESTIMO_CONTRATO_2 = BigDecimal.valueOf(1);
+    private static final BigDecimal PERCENTUAL_SALARIO_COMPROMETIDO_CONTRATO_2 = BigDecimal.valueOf(0.2);
+    private static final BigDecimal JUROS_MES_CONTRATO_2 = BigDecimal.valueOf(0.05);
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -72,7 +72,7 @@ public class SimulacaoServicoTest {
 
     @Before
     public void setUp() throws Exception {
-        sut = new SimulacaoServicoImpl(pessoaServicoMock);
+        sut = new SimulacaoServicoImpl(pessoaServicoMock, contratoRepositorioMock);
 
         configurarMockPessoa();
 
@@ -131,12 +131,14 @@ public class SimulacaoServicoTest {
     @Test
     public void deve_devolver_emprestimos_disponiveis_para_pessoa_de_acordo_com_seu_risco() throws Exception {
         List<Emprestimo> emprestimos = sut.simularEmprestimo(CPF);
-        
-        assertThat(emprestimos).hasSize(2).extracting("codigo", "titulo", "credito", "jurosMes", "parcelas", "prestacoes")
-                .contains(tuple(CODIGO_CONTRATO_1, TITULO_CONTRATO_1, new BigDecimal("1500.0"), JUROS_MES_CONTRATO_1, new Integer(8), new BigDecimal("231.0")),
-                        tuple(CODIGO_CONTRATO_2, TITULO_CONTRATO_2, new BigDecimal("3000.0"), JUROS_MES_CONTRATO_2, new Integer(5), new BigDecimal("630.0")));
+
+        assertThat(emprestimos).hasSize(2).extracting("codigo", "titulo", "credito", "jurosMes", "prestacoes", "parcelas")
+                .usingComparatorForElementFieldsWithType(BigDecimal::compareTo, BigDecimal.class)
+                .contains(tuple(CODIGO_CONTRATO_1, TITULO_CONTRATO_1, BigDecimal.valueOf(1500.0), JUROS_MES_CONTRATO_1, new Integer(8), new BigDecimal("231.000")),
+                        tuple(CODIGO_CONTRATO_2, TITULO_CONTRATO_2, BigDecimal.valueOf(3000), JUROS_MES_CONTRATO_2, new Integer(5), new BigDecimal("630.000")));
     }
-    
+
+
     /*
      * TODO: como deve funcionar:
      * * Ao receber um CPF deve verificar se o usuário existe cadastrado na aplicação.
