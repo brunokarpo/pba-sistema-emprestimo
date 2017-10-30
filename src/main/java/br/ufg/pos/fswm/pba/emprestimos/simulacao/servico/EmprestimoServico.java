@@ -1,7 +1,13 @@
 package br.ufg.pos.fswm.pba.emprestimos.simulacao.servico;
 
+import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.exceptions.CpfNaoEncontradoException;
 import br.ufg.pos.fswm.pba.emprestimos.simulacao.modelo.Emprestimo;
-import br.ufg.pos.fswm.pba.emprestimos.simulacao.resource.dto.RequisicaoEmprestimoDTO; /**
+import br.ufg.pos.fswm.pba.emprestimos.simulacao.resource.dto.RequisicaoEmprestimoDTO;
+import br.ufg.pos.fswm.pba.emprestimos.simulacao.servico.exceptions.EmprestimoException;
+import br.ufg.pos.fswm.pba.emprestimos.simulacao.servico.exceptions.EmprestimoNaoDisponivelException;
+import br.ufg.pos.fswm.pba.emprestimos.simulacao.servico.exceptions.PessoaNegativadaException;
+
+/**
  * Servi&ccedil;o respons&aacute;vel por responder as solicita&ccedil;&otilde;es de empr&eacute;stimos da
  * aplica&ccedil;&atilde;o.
  *
@@ -16,5 +22,5 @@ public interface EmprestimoServico {
      * @param dto
      * @return
      */
-    Emprestimo solicitar(RequisicaoEmprestimoDTO dto);
+    Emprestimo solicitar(RequisicaoEmprestimoDTO dto) throws EmprestimoNaoDisponivelException, PessoaNegativadaException, CpfNaoEncontradoException, EmprestimoException;
 }

@@ -1,4 +1,4 @@
-package br.ufg.pos.fswm.pba.emprestimos.simulacao.servico;
+package br.ufg.pos.fswm.pba.emprestimos.simulacao.resource;
 
 import br.ufg.pos.fswm.pba.emprestimos.EmprestimosApplicationTests;
 import br.ufg.pos.fswm.pba.emprestimos.cadastropositivo.conector.dto.CadastroPessoaDTO;
