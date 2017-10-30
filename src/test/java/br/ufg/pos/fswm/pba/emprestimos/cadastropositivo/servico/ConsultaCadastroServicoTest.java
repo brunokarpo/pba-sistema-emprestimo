@@ -14,6 +14,7 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.client.RestClientException;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -69,17 +70,6 @@ public class ConsultaCadastroServicoTest {
         when(conectorCadastroPositivoMock.consultarCadastro(CPF)).thenReturn(dto);
     }
 
-    /*
-     * Fluxo:
-     * * Pega o CPF da pessoa e consulta no sistema de cadastro (cria uma interface que expoe esse servico). Esse cara
-     *      é o responsável por conectar no serviço de consulta de cadastro e retornar um objeto com a representação dos
-     *      dados encontrados.
-     * * Pega o objeto retornado e verifica se os dados fornecidos pelo cliente estão em consonância com os dados do
-     *      sistema de cadastro positivo. Se não estiver, tem de dar um erro informando que os dados não são compatíveis;
-     * * Com os dados do sistema de cadastro positivo o risco da pessoa é calculado;
-     * * O risco é preenchido no objeto pessoa e ele é retornado.
-     */
-
     @Test
     public void deve_realizar_uma_consulta_no_sistema_de_cadastro_positivo_utilizando_o_cpf_como_parametro_de_busca() throws Exception {
         sut.consultarCadastro(pessoa);
@@ -129,4 +119,12 @@ public class ConsultaCadastroServicoTest {
         assertThat(pessoa.getRisco()).isEqualTo(Risco.BAIXO);
     }
 
+    @Test
+    public void deve_preencher_risco_ALTO_por_padrao_caso_conector_apresente_problemas() throws Exception {
+        when(conectorCadastroPositivoMock.consultarCadastro(CPF)).thenThrow(RestClientException.class);
+
+        pessoa = sut.consultarCadastro(pessoa);
+
+        assertThat(pessoa.getRisco()).isEqualTo(Risco.ALTO);
+    }
 }

@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -45,11 +46,18 @@ public class ConsultaCadastroServicoImpl implements ConsultaCadastroServico {
 
     @Override
     public Pessoa consultarCadastro(Pessoa pessoa) throws DivergenciaDadosException {
-        CadastroPessoaDTO dto = conectorCadastroPositivo.consultarCadastro(pessoa.getCpf());
+        Risco risco = Risco.ALTO;
 
-        verificarCadastroCliente(pessoa, dto);
+        try {
+            CadastroPessoaDTO dto = conectorCadastroPositivo.consultarCadastro(pessoa.getCpf());
 
-        pessoa.setRisco(Risco.calculaRisco(dto.getRisco()));
+            verificarCadastroCliente(pessoa, dto);
+
+            risco = Risco.calculaRisco(dto.getRisco());
+        } catch (RestClientException e) {
+            LOG.error("Ocorreu erro ao tentar conectar no Sistema de Cadastro Positivo. Retornando risco ALTO para pessoa: "+ e.getMessage(), e);
+        }
+        pessoa.setRisco(risco);
 
         return pessoa;
     }

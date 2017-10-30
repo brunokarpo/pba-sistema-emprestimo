@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
@@ -36,9 +37,10 @@ public class PessoaResource_CadastroTest extends EmprestimosApplicationTests {
     private static final BigDecimal SALARIO = new BigDecimal(3500.00);
     private static final int SALARIO_NUMERICO = 3500;
     private static final int NIVEL_3 = 3;
-    private static final String RISCO_STRING = "MEDIO";
+    private static final String RISCO_MEDIO_STRING = "MEDIO";
     private static final String URL_CONSULTA_CADASTRO = "http://dev.consulta-cadastro.nao.existe.com:8080/api/cadastro-positivo/consultar/";
     public static final String PROFISSAO_DESEMPREGADO = "Desempregado";
+    public static final String RISCO_ALTO_STRING = "ALTO";
 
     @MockBean
     private RestTemplate templateMock;
@@ -77,7 +79,22 @@ public class PessoaResource_CadastroTest extends EmprestimosApplicationTests {
                         "nascimento", equalTo(NASCIMENTO_STRING),
                         "profissao", equalTo(PROFISSAO),
                         "salario", equalTo(SALARIO_NUMERICO),
-                        "risco", equalTo(RISCO_STRING));
+                        "risco", equalTo(RISCO_MEDIO_STRING));
+    }
+
+    @Test
+    public void deve_cadastrar_cliente_ainda_que_sistema_de_cadastro_positivo_apresente_erro_retornando_pessoa_com_risco_medio() throws Exception {
+        when(templateMock.getForObject(URL_CONSULTA_CADASTRO + CPF, CadastroPessoaDTO.class)).thenThrow(RestClientException.class);
+
+        executarPostParaSalvarNovaPessoa()
+                .statusCode(HttpStatus.CREATED.value())
+                .headers("Location", equalTo("http://localhost:"+porta+"/api/emprestimo/cliente/" + CPF))
+                .body("nome", equalTo(NOME),
+                        "cpf", equalTo(CPF),
+                        "nascimento", equalTo(NASCIMENTO_STRING),
+                        "profissao", equalTo(PROFISSAO),
+                        "salario", equalTo(SALARIO_NUMERICO),
+                        "risco", equalTo(RISCO_ALTO_STRING));
     }
 
     @Test
