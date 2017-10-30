@@ -138,11 +138,4 @@ public class EmprestimoServicoTest {
         sut.solicitar(requisicaoEmprestimoDTO);
     }
 
-    /**
-     * TODO: Como deve funcionar?
-     * * Dado o CPF, deve procurar no serviço de simulação os empréstimos disponíveis.
-     * * Compara o código da solicitação com os dos emprestimos disponíveis. Se:
-     * * * Existir um equivalente: salva o empréstimo no banco de dados e devolve o empréstimo preenchido.
-     * * * Se não existir código: retorna exceção informando que o empréstimo não está disponível para esse cliente.
-     */
 }
