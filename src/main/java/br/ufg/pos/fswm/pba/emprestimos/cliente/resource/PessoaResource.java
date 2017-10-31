@@ -5,15 +5,13 @@ import br.ufg.pos.fswm.pba.emprestimos.cliente.modelo.Pessoa;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.resource.dto.PessoaDTO;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.resource.evento.RecursoCriadoEvent;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.PessoaServico;
+import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.exceptions.CpfNaoEncontradoException;
 import br.ufg.pos.fswm.pba.emprestimos.cliente.servico.exceptions.PessoaServicoException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -53,5 +51,11 @@ public class PessoaResource {
         publisher.publishEvent(new RecursoCriadoEvent(this, response, pessoa.getCpf()));
 
         return new ResponseEntity<>(PessoaDTO.PessoaDTOTransformer.criarDto(pessoa), HttpStatus.CREATED);
+    }
+
+    @GetMapping("/{cpf}")
+    public ResponseEntity<PessoaDTO> consultar(@PathVariable("cpf") String cpf) throws DivergenciaDadosException, CpfNaoEncontradoException {
+        final Pessoa pessoa = servico.buscarPorCpf(cpf);
+        return new ResponseEntity<>(PessoaDTO.PessoaDTOTransformer.criarDto(pessoa), HttpStatus.OK);
     }
 }
