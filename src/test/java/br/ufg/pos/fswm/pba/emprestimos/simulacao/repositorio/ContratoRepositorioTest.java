@@ -1,5 +1,6 @@
 package br.ufg.pos.fswm.pba.emprestimos.simulacao.repositorio;
 
+import br.ufg.pos.fswm.pba.emprestimos.EmprestimosApplicationRepositorioTest;
 import br.ufg.pos.fswm.pba.emprestimos.cadastropositivo.modelo.Risco;
 import br.ufg.pos.fswm.pba.emprestimos.simulacao.modelo.Contrato;
 import org.junit.Test;
@@ -20,12 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * @author Bruno Nogueira de Oliveira
  * @date 29/10/17.
  */
-@Sql(value = "/load-database.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-@Sql(value = "/clean-database.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-@DataJpaTest
-@RunWith(SpringRunner.class)
-@TestPropertySource("classpath:application-test.properties")
-public class ContratoRepositorioTest {
+public class ContratoRepositorioTest extends EmprestimosApplicationRepositorioTest {
 
     @Autowired
     private ContratoRepositorio sut;

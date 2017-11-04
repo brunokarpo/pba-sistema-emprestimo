@@ -1,0 +1,8 @@
+CREATE TABLE contrato (
+  "id" INT NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+  "codigo" VARCHAR(4) UNIQUE NOT NULL,
+  "titulo" VARCHAR(255) UNIQUE NOT NULL,
+  "perc_sal_emprestimo" DECIMAL(10, 2) NOT NULL,
+  "perc_sal_comprometido" DECIMAL(10, 2) NOT NULL,
+  "juros_mes" DECIMAL(10, 2) NOT NULL
+);
