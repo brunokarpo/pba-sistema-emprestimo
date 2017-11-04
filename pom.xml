@@ -6,7 +6,7 @@
 	<groupId>br.ufg.pos.fswm.pba</groupId>
 	<artifactId>emprestimos</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<!--<packaging>war</packaging>-->
 
 	<name>emprestimos</name>
 	<description>Demo project for Spring Boot</description>
@@ -71,9 +71,8 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.apache.derby</groupId>
-			<artifactId>derby</artifactId>
-			<scope>runtime</scope>
+			<groupId>org.hsqldb</groupId>
+			<artifactId>hsqldb</artifactId>
 		</dependency>
 
 		<dependency>
@@ -85,11 +84,6 @@
 			<groupId>io.rest-assured</groupId>
 			<artifactId>rest-assured</artifactId>
 			<version>${rest-assured.version}</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.hsqldb</groupId>
-			<artifactId>hsqldb</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
