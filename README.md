@@ -23,3 +23,6 @@ Após isso volte no diretório principal e você observará que existe um arquiv
 `Sistema-emprestimo.postman_collection.json`
 
 Esse arquivo contém as requisições que podem ser importadas no Postman para testar o projeto.
+
+## Documentações:
+No projeto existe um arquivo chamado Documentacoes.zip que contém as especificações que procuramos seguir nesse trabalho.
