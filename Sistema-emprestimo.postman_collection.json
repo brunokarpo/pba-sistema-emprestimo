@@ -1,0 +1,73 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Sistema-emprestimo",
+		"_postman_id": "bacebea2-f1d9-e688-9c76-036983940643",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Salvar novo cliente.",
+			"request": {
+				"url": "http://localhost:8080/api/emprestimo/cliente",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"nome\":\"Emanuel Rafael Pedro Henrique Nascimento\",\n   \"sexo\":\"MASCULINO\",\n   \"cpf\":\"92385830213\",\n   \"nascimento\":\"1995-03-03\",\n   \"profissao\":\"programador\",\n   \"salario\":3000.00\n}\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Simular empréstimo",
+			"request": {
+				"url": "http://localhost:8080//api/emprestimo/simulacao/92385830213",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Solicitar empréstimo",
+			"request": {
+				"url": "http://localhost:8080/api/emprestimo/",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \"cpf\":\"92385830213\",\n   \"codigoCredito\":\"c018\"\n}\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "Consultar dados de um cliente",
+			"request": {
+				"url": "http://localhost:8080/api/emprestimo/cliente/92385830213",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
